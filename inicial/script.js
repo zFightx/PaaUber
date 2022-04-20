@@ -102,7 +102,6 @@ function readTextFile(file) {
     }
 
     rawFile.send(null);
-
 }
 
 function main() {
@@ -112,7 +111,8 @@ function main() {
     clienteGraph = new Graph();
     carroGraph   = new Graph();
 
-    readTextFile("./graphs/grafo.txt");
+    // readTextFile("./graphs/grafo.txt");
+    result = "Aresta_n v_origem Loc_v_origem_x Loc_v_origem_y v_destino Loc_v_destino_x Loc_v_destino_y Distância_km Velocidade_km_h\n1 1 2.2 4.3 2 5.1 3.2 3.1 40\n2 2 5.1 3.2 3 7.4 4.4 2.6 35\n3 3 7.4 4.4 1 2.2 4.3 5.2 38";
 
     // Retirando a primeira linha do arquivo texto
     let lines = result.split('\n');
@@ -141,7 +141,8 @@ function main() {
             mapGraph.addNode(node);
     }
 
-    readTextFile("./graphs/clientes.txt");
+    // readTextFile("./graphs/clientes.txt");
+    result = "Cliente_id loc_cliente_x loc_cliente_y dest_cliente_x dest_cliente_y\n443 5.0 3.0 2.7 4.1";
 
     // Retirando a primeira linha do arquivo texto
     lines = result.split('\n');
@@ -169,7 +170,8 @@ function main() {
             clienteGraph.addNode(node);
     }
 
-    readTextFile("./graphs/carros.txt");
+    // readTextFile("./graphs/carros.txt");
+    result = "Carro_id loc_carro_x loc_carro_y aresta_id\n53 7.4 4.4 3";
 
     // Retirando a primeira linha do arquivo texto
     lines = result.split('\n');
