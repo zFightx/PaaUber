@@ -105,7 +105,6 @@ function readTextFile(file) {
 
 }
 
-// p5.js: É executado primeiro
 function main() {
 
     // Inicializando os Grafos
