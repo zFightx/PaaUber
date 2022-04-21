@@ -8,20 +8,27 @@ import Home from '../src/pages/Home/index'
 function App() {
 
     const [leituraGrafo, setLeituraGrafo] = useState('')
+    const [leituraCarro, setLeituraCarro] = useState('')
+    const [leituraPessoa, setLeituraPessoa] = useState('')
 
-
-    const readFile = (event, cb) => {
+    const readFile = (event, tipo,cb) => {
         var fr=new FileReader();
         fr.onload=function(){
             const read = fr.result;
             cb(read);
-            setLeituraGrafo(read)
+            if (tipo === 1){
+                setLeituraGrafo(read)
+            } else if (tipo === 2){
+                setLeituraPessoa(read)
+            } else {
+                setLeituraCarro(read)
+            }
         }
         fr.readAsText(event.target.files[0]);
     }
     
     const CreateMap = (event) => {
-        readFile(event, function(result){
+        readFile(event, 1, function(result){
             // Retirando a primeira linha do arquivo texto
             let lines = result.split('\n');
             lines.splice(0, 1);
@@ -66,7 +73,7 @@ function App() {
     }
 
     const CreateClientes = (event) => {
-        readFile(event, function(result){
+        readFile(event, 2, function(result){
             const clientes = [];
     
             // Retirando a primeira linha do arquivo texto
@@ -98,7 +105,7 @@ function App() {
     }
     
     const CreateCarros = (event) => {
-        readFile(event, function(result){
+        readFile(event, 3, function(result){
             const carroGraph = [];
     
             // Retirando a primeira linha do arquivo texto
@@ -135,9 +142,9 @@ function App() {
                 <input type="file" onChange={CreateMap} />
                 <p>Grafos: {leituraGrafo}</p>
                 <input type="file" onChange={CreateCarros} />
-                <p>Grafos: {leituraGrafo}</p>
+                <p>Carro: {leituraCarro}</p>
                 <input type="file" onChange={CreateClientes} />
-                <p>Grafos: {leituraGrafo}</p>                
+                <p>Pessoa: {leituraPessoa}</p>                
             </header>
         </div>
     );
