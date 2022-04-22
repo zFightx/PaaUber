@@ -74,10 +74,18 @@ function App() {
                 }
             }
     
-            console.log(vertices);
-            console.log(arestas);
+            // console.log(vertices);
+            // console.log(arestas);
     
             AEstrela(vertices[3], vertices[6], true);
+            const caminhos = [];
+            const caminho = {
+                vertices : [],
+                dist : 0,
+                tempo: 0,
+            }
+            DFSCaminho(vertices[3], vertices[6], caminho, caminhos);
+            console.log(caminhos);
         });
     }
     
@@ -331,6 +339,25 @@ const AEstrela = (start, end, withTime) => {
 
     console.log(caminho);
     return caminho;
+}
+
+const DFSCaminho = (start, end, caminho, todosCaminhos) =>{
+    if(start.numero == end.numero){
+        todosCaminhos.push(caminho);
+        return;
+    }
+
+    for( const destino in start.vizinhos ){
+        if(caminho.vertices.filter( vertice => vertice.numero == destino ).length == 0){
+            const novoCaminho = {
+                vertices : [...caminho.vertices, vertices[destino]],
+                dist : start.vizinhos[destino].distancia + caminho.dist,
+                tempo : (start.vizinhos[destino].distancia/start.vizinhos[destino].velocidade) + caminho.tempo
+            };
+            
+            DFSCaminho(vertices[destino], end, novoCaminho, todosCaminhos);
+        }
+    }
 }
 
 export default App;
