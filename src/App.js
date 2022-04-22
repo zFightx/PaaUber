@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import "./App.css";
 import Home from '../src/pages/Home/index'
-
+import { Graph } from 'react-d3-graph';
 
 
 function App() {
@@ -10,6 +10,39 @@ function App() {
     const [leituraGrafo, setLeituraGrafo] = useState('')
     const [leituraCarro, setLeituraCarro] = useState('')
     const [leituraPessoa, setLeituraPessoa] = useState('')
+
+
+
+
+// graph payload (with minimalist structure)
+const data = {
+    nodes: [
+    {id: 'Harry', x: 220, y: 430},
+    {id: 'Sally', x: 510, y: 320},
+    {id: 'Alice', x: 740, y: 440}
+    ],
+    links: [
+        {source: 'Harry', target: 'Sally'},
+        {source: 'Harry', target: 'Alice'},
+        {source: 'Sally', target: 'Alice'},
+    ],
+};
+
+// the graph configuration, you only need to pass down properties
+// that you want to override, otherwise default ones will be used
+const myConfig = {
+    nodeHighlightBehavior: true,
+    node: {
+        color: 'lightgreen',
+        size: 120,
+        highlightStrokeColor: 'blue'
+    },
+    link: {
+        highlightColor: 'lightblue',
+    },
+    "directed": true,
+};
+    
 
     const readFile = (event, tipo,cb) => {
         var fr=new FileReader();
@@ -139,12 +172,11 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <input type="file" onChange={CreateMap} />
-                <p>Grafos: {leituraGrafo}</p>
-                <input type="file" onChange={CreateCarros} />
-                <p>Carro: {leituraCarro}</p>
-                <input type="file" onChange={CreateClientes} />
-                <p>Pessoa: {leituraPessoa}</p>                
+                {/**<Home CreateMap={CreateMap} leituraGrafo={leituraGrafo} CreateCarros={CreateCarros} leituraCarro={leituraCarro} CreateClientes={CreateClientes} leituraPessoa={leituraPessoa}></Home>*/}
+                <Graph
+            id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
+        data={data}
+        config={myConfig}/>
             </header>
         </div>
     );
