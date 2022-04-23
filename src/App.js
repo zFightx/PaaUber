@@ -15,7 +15,7 @@ function App() {
     const [arestas, setArestas] = useState({});
     const [showGrafo, setShowGrafo] = useState(false);
     const [dataGrafo, setDataGrafo] = useState({});
-    const [posicaoBloco, setPosicaoBloco] = useState("1");
+    const [posicaoBloco, setPosicaoBloco] = useState(1);
 
     const setterObject = {
         setGrafo: setGrafo,
@@ -86,9 +86,9 @@ function App() {
         <div className="App">
             { !showGrafo &&
                 <header className="App-header">
-                    <BlocoLeitura title="Seleciona o arquivo de arestas" position="1" onChangeInput={(e) => CreateMap(e, setterObject)} onClickButton={() => setPosicaoBloco((antigaPosicao) => antigaPosicao+1)} />
-                    {/* <BlocoLeitura title="Seleciona o arquivo de carros" position="2" onChangeInput={(e) => CreateCarros(e, setCarros)} />
-                    <BlocoLeitura title="Seleciona o arquivo de clientes" position="3" onChangeInput={(e) => CreateClientes(e, setClientes)} />              */}
+                    {posicaoBloco == 1 && <BlocoLeitura title="Seleciona o arquivo de arestas" position="1" onChangeInput={(e) => CreateMap(e, setterObject)} onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)} />}
+                    {posicaoBloco == 2 && <BlocoLeitura title="Seleciona o arquivo de carros" position="2" onChangeInput={(e) => CreateCarros(e, setCarros)} onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)}/>}
+                    {posicaoBloco == 3 && <BlocoLeitura title="Seleciona o arquivo de clientes" position="3" onChangeInput={(e) => CreateClientes(e, setClientes)} onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)} />}
                 </header>
             }
 

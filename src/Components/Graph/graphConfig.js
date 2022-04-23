@@ -6,7 +6,7 @@
     "focusAnimationDuration": 0.75,
     "focusZoom": 50,
     "freezeAllDragEvents": false,
-    "height": 400,
+    "height": 2000,
     "highlightDegree": 1,
     "highlightOpacity": 1,
     "linkHighlightBehavior": false,
