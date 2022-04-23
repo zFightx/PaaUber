@@ -17,9 +17,9 @@ function App() {
 // graph payload (with minimalist structure)
 const data = {
     nodes: [
-    {id: 'Harry', x: 220, y: 430},
-    {id: 'Sally', x: 510, y: 320},
-    {id: 'Alice', x: 740, y: 440}
+    {id: 'Harry', x: 220, y: 330},
+    {id: 'Sally', x: 310, y: 220},
+    {id: 'Alice', x: 440, y: 240}
     ],
     links: [
         {source: 'Harry', target: 'Sally'},
@@ -34,7 +34,7 @@ const myConfig = {
     nodeHighlightBehavior: true,
     node: {
         color: 'lightgreen',
-        size: 120,
+        size: 1200,
         highlightStrokeColor: 'blue'
     },
     link: {
