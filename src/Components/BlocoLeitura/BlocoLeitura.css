@@ -1,0 +1,131 @@
+﻿.container{
+    width:600px;
+    height: 250px;
+    /* ABB2B9  5f656b*/
+    background-color: #5f656b;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+
+    box-shadow: 1px 1px 10px 2px rgb(48, 41, 41);
+
+}
+.container:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    box-shadow: inset 0 0 800px rgba(0, 0, 0, 0.582);
+    filter: blur(10px);
+}
+
+
+.inputBox{
+    flex: 1;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+input[type=file]::file-selector-button{
+    /* border: 2px solid ; */
+    padding: .2em .4em;
+    /* border-radius: .2em; */
+    background-color: #0987D8;
+    transition: 0.5s;
+
+    border-radius: 5px;
+    background-color: rgb(58, 115, 201);
+    color: white;
+    border:none;
+    outline: none;
+    
+    padding: 10px 20px;
+
+    margin-right: 10px;
+}
+
+input[type=file]::file-selector-button:hover{
+    /* filter: brightness(60%); */
+    background-color: rgb(58, 80, 201);
+}
+
+input[type=file]{
+    /* font-size: 14pt; */
+    text-shadow: 1px 1px 1px rgb(46, 46, 46);
+    background-color: gray;
+    padding-right: 10px;
+    border-radius: .3em;
+
+    width: 55%;
+
+    /* color: black; */
+}
+
+.button{
+    align-self: flex-end;
+    margin-right: 25px;
+
+    border-radius: 5px;
+    background-color: rgb(58, 115, 201);
+    color: white;
+    border:none;
+    outline: none;
+    
+    padding: 10px 20px;
+}
+
+.button:hover{
+    background-color: rgb(58, 80, 201);
+}
+
+.positionRow{
+    width: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.circle{
+    background-color: #ABB2B9;
+    box-shadow: inset 1px 1px 3px 0px rgba(5, 5, 5, 0.5);
+    
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+}
+
+.activeCircle{
+    background-color: rgb(58, 115, 201);
+    box-shadow: inset 1px 1px 3px 0px #000;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+}
+
+.title{
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 18pt;
+    text-shadow: 1px 1px 2px black;
+
+    /* color: black; */
+}
+
+
