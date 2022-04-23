@@ -66,15 +66,15 @@ const CreateMap = (event, setterObject) => {
         setterObject.setGrafo(vertices);
         setterObject.setArestas(arestas);
 
-        AEstrela(vertices, vertices[3], vertices[6], true);
-        const caminhos = [];
-        const caminho = {
-            vertices : [],
-            dist : 0,
-            tempo: 0,
-        }
-        DFSCaminho(vertices, vertices[3], vertices[6], caminho, caminhos);
-        console.log(caminhos);
+        // AEstrela(vertices, vertices[3], vertices[6], true);
+        // const caminhos = [];
+        // const caminho = {
+        //     vertices : [],
+        //     dist : 0,
+        //     tempo: 0,
+        // }
+        // DFSCaminho(vertices, vertices[3], vertices[6], caminho, caminhos);
+        // console.log(caminhos);
 
         
     });
@@ -176,7 +176,8 @@ function ClienteNode(cliente_id, loc_cliente_x, loc_cliente_y, dest_cliente_x, d
         dest:{
             x:dest_cliente_x,
             y: dest_cliente_y
-        }
+        },
+        tem_carro : false,
     }
 
     return cliente
@@ -190,6 +191,7 @@ function CarroNode(carro_id, loc_carro_x, loc_carro_y, aresta_id) {
             y: loc_carro_y
         },
         aresta: aresta_id,
+        tem_cliente: false,
     }
 
     return carro;

@@ -82,8 +82,10 @@ const AEstrela = (vertices, start, end, withTime) => {
         }
     }
 
-    console.log(caminho);
-    return caminho;
+    // console.log("print aStar");
+    // console.log(caminho[0]);
+    // console.log("---------------");
+    return caminho[0];
 }
 
 

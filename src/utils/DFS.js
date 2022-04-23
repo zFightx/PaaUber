@@ -1,4 +1,17 @@
-﻿const DFSCaminho = (vertices, start, end, caminho, todosCaminhos) =>{
+﻿const DFSCaminho = (vertices, start, end) =>{
+    const caminhos = [];
+    const caminho = {
+        vertices : [],
+        dist : 0,
+        tempo: 0,
+    }
+
+    DFS(vertices, start,end, caminho, caminhos);
+
+    return caminhos;
+}
+
+const DFS = (vertices, start, end, caminho, todosCaminhos) =>{
     if(start.numero == end.numero){
         todosCaminhos.push(caminho);
         return;

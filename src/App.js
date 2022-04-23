@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Graph } from "react-d3-graph";
 import { CreateMap, CreateCarros, CreateClientes } from "./Create/Create";
 import { BlocoLeitura } from "./Components/BlocoLeitura/BlocoLeitura";
+import { BlocoCliente } from "./Components/BlocoCliente/BlocoCliente";
 import { graphConfig } from "./Components/Graph/graphConfig";
 import "./App.css";
 import CarImg from "./assets/car.png";
@@ -16,6 +17,7 @@ function App() {
     const [showGrafo, setShowGrafo] = useState(false);
     const [dataGrafo, setDataGrafo] = useState({});
     const [posicaoBloco, setPosicaoBloco] = useState(1);
+    const [showBlocoCliente, setShowBlocoCliente] = useState(false);
 
     const setterObject = {
         setGrafo: setGrafo,
@@ -69,11 +71,23 @@ function App() {
         for( const numero in clientes ){
             const cliente = clientes[numero];
 
-            dataGrafo.nodes.push({ id : `${numero}`, x: cliente.loc.x * 50 , y: cliente.loc.y * 50, svg: ClientImg, "labelPosition": "top", "fontColor": "#6DADD6"  });
+            dataGrafo.nodes.push({ id : `${numero}`, x: cliente.loc.x * 50, y: cliente.loc.y * 50, svg: ClientImg, "labelPosition": "top", "fontColor": "#6DADD6"  });
         }
+
+        dataGrafo.focusedNodeId = "3";
 
         setDataGrafo(dataGrafo);
         setShowGrafo(true);
+    }
+
+    const onClickNode = (nodeId) => {
+        if(nodeId.includes("cl")){
+            setShowBlocoCliente(true);
+        }
+        console.log("Clicou no " + nodeId);
+
+        dataGrafo.focusedNodeId = nodeId;
+        setDataGrafo(dataGrafo);
     }
 
     useEffect(() => {
@@ -92,11 +106,20 @@ function App() {
                 </header>
             }
 
-            { showGrafo && <Graph
-                id="graph-id" // id is mandatory
-                data={dataGrafo}
-                config={graphConfig}
-            />}
+            { showGrafo && 
+                <div className="Grafo">
+                    <Graph
+                        id="graph-id" // id is mandatory
+                        data={dataGrafo}
+                        config={graphConfig}
+                        onClickNode={onClickNode}
+                        // onClickLink={onClickLink}
+                    />
+                </div>
+            }
+
+            {showBlocoCliente && <BlocoCliente carros={carros} vertices={grafo} />}
+
         </div>
     );
 }
