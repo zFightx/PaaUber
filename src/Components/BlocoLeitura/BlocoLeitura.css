@@ -98,6 +98,14 @@ input[type="file"] {
   background-color: rgb(58, 80, 201);
 }
 
+.backButton {
+  position: absolute;
+  right: 16%;
+  top: 67.6%;
+  align-self: flex-start;
+  margin-left: 25px;
+}
+
 .disabledButton {
   background-color: grey;
 }
