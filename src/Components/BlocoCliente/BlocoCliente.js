@@ -5,6 +5,7 @@ import DFSCaminho from '../../utils/DFS';
 import AEstrela from '../../utils/AEstrela';
 import { verticeMaisProximo } from '../../utils/outros';
 import mergeSort from '../../algoritmos/mergesort';
+import CarImg from '../../assets/car.png';
 
 const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho}) => {
     const [subPage, setSubPage] = useState(0);
@@ -45,7 +46,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
     }
 
     const SelecionarCorrida = () =>{
-        carros[carroSelect].tem_cliente.push(cliente.id);
+        carros[carroSelect.id].tem_cliente.push(cliente.id);
     }
 
     const RenderCarros = () => {
@@ -56,7 +57,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                     <div className='opcaoCliente' key={carro.id} 
                         onMouseEnter={() => DesenharCaminho(carro.resultado.caminho)}
                         onMouseLeave={() => ApagarCaminho(carro.resultado.caminho)}
-                        onClick={() => SelectCarro(carro.id)}
+                        onClick={() => SelectCarro(carro)}
                     >
                         <p>{carro.id}</p>
                         <p>{carro.resultado.tempo.toFixed(2)} horas</p>
@@ -70,10 +71,11 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                     <div className='opcaoCliente' key={carro.id}
                         onMouseEnter={() => DesenharCaminho(carro.resultado.caminho)}
                         onMouseLeave={() => ApagarCaminho(carro.resultado.caminho)}
-                        onClick={() => SelectCarro(carro.id)}
+                        onClick={() => SelectCarro(carro)}
                     >
                         <p>{carro.id}</p>
                         <p>{carro.resultado.dist.toFixed(2)} Km</p>
+                        {/* <i class="fas fa-angle-right"></i> */}
                     </div>
                 );
             });
@@ -95,13 +97,20 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                 !cliente.tem_carro && subPage == 0 && 
                 <> 
                     <div className='opcaoCliente' onClick={() => verCarros(false)}>
-                        <p>Ver Carros Livres</p>
-                        <p>Pela distância</p>
+                        <div className='opcaoText'>
+                            <p>Ver Carros Livres</p>
+                            <p>Pela distância</p>
+                        </div>
+                        <i class="fas fa-angle-right"></i>
                     </div>
                     
                     <div className='opcaoCliente' onClick={() => verCarros(true)}>
-                        <p>Ver Carros Livres</p>
-                        <p>Pelo tempo</p>
+                        <div className='opcaoText'>
+                            <p>Ver Carros Livres</p>
+                            <p>Pelo tempo</p>
+                        </div>
+
+                        <i class="fas fa-angle-right"></i>
                     </div>
                 </>
             }
@@ -109,27 +118,38 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                 !cliente.tem_carro && subPage == 1 &&
                 <>     
                     <div className='opcaoCliente' onClick={() => setSubPage(0)}>
-                        <p>Voltar</p>
+                        <i class="fas fa-angle-left"></i>
+                        <div className='opcaoText'>
+                            <p>Voltar</p>
+                        </div>  
                         {/* <p>Pelo tempo</p> */}
                     </div>               
                     {RenderCarros()}
                 </>
             }
+            
             {
                 !cliente.tem_carro && subPage == 2 &&
                 <>     
                     <div className='opcaoCliente' onClick={() => setSubPage(1)}>
+                        <i className="fas fa-angle-left"></i>
                         <p>Voltar</p>
                     </div>    
 
-                    <div className='opcaoCliente'>
-                        <p>{carroSelect}</p>
+                    <div className='opcaoImage'>
+                        <div className='opcaoImageBox'>
+                            <img src={CarImg} />
+                        </div>
+                        <p>Solicitar corrida com {carroSelect.id}?</p>
+                        {comTempo && <p>Tempo: {carroSelect.resultado.tempo} horas</p>}
+                        {!comTempo && <p>Distância: {carroSelect.resultado.dist} km</p>}
                     </div>
 
-                    <div className='opcaoCliente'
+                    <div className='opcaoButton'
                         onClick={() => SelecionarCorrida()}
                         >
                         <p>Selecionar Corrida</p>
+                        <i class="fas fa-check-circle"></i>
                     </div>
                 </>
             }

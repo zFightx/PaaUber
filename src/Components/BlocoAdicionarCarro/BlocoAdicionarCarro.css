@@ -1,5 +1,5 @@
 .blocoAdicionarCarro{
-    width: 300px;
+    width: 310px;
     height: 500px;
 
     position:absolute;
@@ -8,53 +8,73 @@
     transform: translate(0%, -50%);
     
     overflow: hidden;
-    border-radius: 20px 0 0 20px;
+    /* border-radius: 20px 0 0 20px; */
+    border-radius: 5px 0 0 5px;
     z-index: 1;
     
     /* background-color: whitesmoke; */
-    background-color: rgb(119, 49, 8);
+    /* background-color: rgb(119, 49, 8); */
+    /* background-color: rgb(58, 115, 201); */
+    background-color: rgba(15, 15, 15, 0.445);
 
 
-    padding-top: 20px;
+    /* padding-top: 20px; */
+}
+
+.blocoAdicionarInputs{
+    padding: 0 20px;
 }
 
 .titleAdicionarCarro{
     font-size: 18pt;
     text-align: center;
     margin-bottom: 20px;
+
+    background-color: rgb(58, 115, 201);
+    padding: 10px;
 }
 
 .labelAdicionarCarro{
     display: flex;
-    margin: 0 0 10px 20px;
+    /* font-size: 10pt; */
+    /* visibility: hidden; */
+    /* margin: 0 0 10px 20px; */
 }
 
 .labelAdicionarCarros{
     display: flex;
-    margin: 0 0 20px 20px;
+    /* margin: 0 0 20px 20px; */
+
+    background: none;
+    /* background-color: rgba(129, 129, 129, 0.1); */
+    border: none;
+    outline: none;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.521);
+    /* border-radius: 10px; */
+
+    width: 100%;
+
+    padding: 8px 0;
+    color: white;
+
+    margin: 10px 0;
+    /* font-size: 10pt; */
 }
 
 .submitAdicionarCarro{
     display: flex;
     font-size: 15pt;
-    margin-left: 120px;
-    background-color: aquamarine;
-    border-radius: 10px 10px 10px 10px;
-}
 
-.opcaoCliente{
-    width: 100%;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
+    margin: auto;
+    margin-top: 50px;
+    /* margin-left: 120px; */
+    /* background-color: aquamarine; */
+    background-color: rgb(58, 115, 201);
+    border: none;
+    outline: none;
+    color: white;
 
-    margin-bottom: 5px;
-}
-
-.opcaoCliente:hover{
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.opcaoCliente p:last-child{
-    color: rgba(255, 255, 255, 0.575);
-    font-size: 10pt;
+    padding: 5px 20px;
+    /* border-radius: 10px 10px 10px 10px; */
+    border-radius: 5px;
 }

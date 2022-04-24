@@ -22,44 +22,38 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo}) => {
     
     const handleChangeIdCarro = event => {
         setIdCarro(event.target.value);
-        console.log(idCarro);
     };
 
     const handleChangeXCarro = event => {
         setXCarro(event.target.value);
-        console.log(xCarro);
     };
 
     const handleChangeYCarro = event => {
         setYCarro(event.target.value);
-        console.log(yCarro);
     };
 
     const handleChangeIdCarroAresta = event => {
         setIdCarroAresta(event.target.value);
-        console.log(idCarroAresta);
     };
 
     return(
         <form onSubmit={handleSubmit} className='blocoAdicionarCarro'>
             <p className='titleAdicionarCarro'> Adicionar Carro</p>
-            <label className='labelAdicionarCarro'>Digite o id do carro:
-            </label>
-            <input className='labelAdicionarCarros' type="text" onChange={handleChangeIdCarro} />
-            
-            <label className='labelAdicionarCarro'>Digite a posição X do carro:
-            </label>
-            <input className='labelAdicionarCarros' type="text" onChange={handleChangeXCarro} />
+            <div className='blocoAdicionarInputs'>
+                <label className='labelAdicionarCarro'>Digite o id do carro:</label>
+                <input className='labelAdicionarCarros' placeholder='valor inteiro' type="text" onChange={handleChangeIdCarro} />
+                
+                <label className='labelAdicionarCarro'>Digite a posição X do carro:</label>
+                <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeXCarro} />
 
-            <label className='labelAdicionarCarro'>Digite a posição Y do carro:
-            </label>
-            <input className='labelAdicionarCarros' type="text" onChange={handleChangeYCarro} />
+                <label className='labelAdicionarCarro'>Digite a posição Y do carro:</label>
+                <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeYCarro} />
 
-            <label className='labelAdicionarCarro'>Digite o id da aresta que o carro está:
-            </label>
-            <input className='labelAdicionarCarros' type="text" onChange={handleChangeIdCarroAresta} />
+                <label className='labelAdicionarCarro'>Digite o id da aresta que o carro está:</label>
+                <input className='labelAdicionarCarros' placeholder='valor inteiro' type="text" onChange={handleChangeIdCarroAresta} />
 
-            <input className='submitAdicionarCarro' type="submit" value="Enviar" />
+                <input className='submitAdicionarCarro' type="submit" value="Enviar" />
+            </div>
 
         </form>
     );
