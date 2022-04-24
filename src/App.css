@@ -41,8 +41,15 @@ input{
   margin: auto;
   overflow: hidden;
 
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+Graph{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 }

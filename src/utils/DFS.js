@@ -1,7 +1,7 @@
 ﻿const DFSCaminho = (vertices, start, end) =>{
     const caminhos = [];
     const caminho = {
-        vertices : [],
+        vertices : [start],
         dist : 0,
         tempo: 0,
     }
@@ -25,7 +25,7 @@ const DFS = (vertices, start, end, caminho, todosCaminhos) =>{
                 tempo : (start.vizinhos[destino].distancia/start.vizinhos[destino].velocidade) + caminho.tempo
             };
             
-            DFSCaminho(vertices, vertices[destino], end, novoCaminho, todosCaminhos);
+            DFS(vertices, vertices[destino], end, novoCaminho, todosCaminhos);
         }
     }
 }

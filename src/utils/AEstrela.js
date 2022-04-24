@@ -19,7 +19,9 @@ const AEstrela = (vertices, start, end, withTime) => {
         vertice : start,
         dist : 0,
         tempo: 0,
-        caminho : [],
+        caminho : [
+            start
+        ],
     });
     
     visited.push(start.numero);

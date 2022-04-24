@@ -6,43 +6,60 @@ import AEstrela from '../../utils/AEstrela';
 import { verticeMaisProximo } from '../../utils/outros';
 import mergeSort from '../../algoritmos/mergesort';
 
-const BlocoCliente = ({carros, vertices}) => {
+const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho}) => {
     const [subPage, setSubPage] = useState(0);
     const [listaCarros, setListaCarros] = useState([]);
     const [comTempo, setComTempo] = useState(false);
+    const [carroSelect, setCarroSelect] = useState(0);
 
     const verCarros = (withTime) =>{
         const caminhos = [];
 
         for(const id in carros){
             const carro = carros[id];
-            const start = vertices[verticeMaisProximo(carro.loc.x, carro.loc.y, vertices)];
-            const end = vertices[6];
 
-            const caminho = AEstrela(vertices, start, end, withTime);
-            caminhos.push({
-                id: id,
-                caminho: caminho
-            });
-            // const caminhos = DFSCaminho(vertices, start, end);
+            if(!carro.ocupado){
+                const start = vertices[verticeMaisProximo(carro.loc.x, carro.loc.y, vertices)];
+                const end = vertices[verticeMaisProximo(cliente.loc.x, cliente.loc.y, vertices)];
+                
+                const caminho = AEstrela(vertices, start, end, withTime);
+                caminhos.push({
+                    id: id,
+                    resultado: caminho
+                });
+                // const caminhos = DFSCaminho(vertices, start, end);
+            }
         }
 
         setComTempo(withTime);
         setListaCarros(caminhos);
         setSubPage(1);
 
-        const vetor = [ 5 , 4, 3 ,2, 10];
-        const ordenado = mergeSort(vetor, 0, vetor.length-1);
-        console.log(vetor);
+        // console.log(caminhos);
+        mergeSort(caminhos, 0, caminhos.length-1);
+    }
+
+    const SelectCarro = (carroId) => {
+        setCarroSelect(carroId);
+        setSubPage(2);
+    }
+
+    const SelecionarCorrida = () =>{
+        carros[carroSelect].tem_cliente.push(cliente.id);
     }
 
     const RenderCarros = () => {
         if(comTempo){
             return listaCarros.map(carro => {
+                // console.log(carro);
                 return (
-                    <div className='opcaoCliente'>
+                    <div className='opcaoCliente' key={carro.id} 
+                        onMouseEnter={() => DesenharCaminho(carro.resultado.caminho)}
+                        onMouseLeave={() => ApagarCaminho(carro.resultado.caminho)}
+                        onClick={() => SelectCarro(carro.id)}
+                    >
                         <p>{carro.id}</p>
-                        <p>{carro.caminho.tempo.toFixed(2)} horas</p>
+                        <p>{carro.resultado.tempo.toFixed(2)} horas</p>
                     </div>
                 );
             });
@@ -50,9 +67,13 @@ const BlocoCliente = ({carros, vertices}) => {
         else{
             return listaCarros.map(carro => {
                 return (
-                    <div className='opcaoCliente'>
+                    <div className='opcaoCliente' key={carro.id}
+                        onMouseEnter={() => DesenharCaminho(carro.resultado.caminho)}
+                        onMouseLeave={() => ApagarCaminho(carro.resultado.caminho)}
+                        onClick={() => SelectCarro(carro.id)}
+                    >
                         <p>{carro.id}</p>
-                        <p>{carro.caminho.dist.toFixed(2)} Km</p>
+                        <p>{carro.resultado.dist.toFixed(2)} Km</p>
                     </div>
                 );
             });
@@ -61,14 +82,23 @@ const BlocoCliente = ({carros, vertices}) => {
 
     return (
         <div className="blocoCliente">
-            <p className='titleCliente'>Cliente</p>
-            { subPage == 0 && 
+            <p className='titleCliente'>Cliente {cliente.id}</p>
+            {
+                cliente.tem_carro &&
+                <> 
+                    <div className='opcaoCliente'>
+                        <p>Cliente Aguardando o Motorista</p>
+                    </div>
+                </>
+            }
+            { 
+                !cliente.tem_carro && subPage == 0 && 
                 <> 
                     <div className='opcaoCliente' onClick={() => verCarros(false)}>
                         <p>Ver Carros Livres</p>
                         <p>Pela distância</p>
                     </div>
-
+                    
                     <div className='opcaoCliente' onClick={() => verCarros(true)}>
                         <p>Ver Carros Livres</p>
                         <p>Pelo tempo</p>
@@ -76,13 +106,31 @@ const BlocoCliente = ({carros, vertices}) => {
                 </>
             }
             {
-                subPage == 1 &&
+                !cliente.tem_carro && subPage == 1 &&
                 <>     
                     <div className='opcaoCliente' onClick={() => setSubPage(0)}>
                         <p>Voltar</p>
                         {/* <p>Pelo tempo</p> */}
                     </div>               
                     {RenderCarros()}
+                </>
+            }
+            {
+                !cliente.tem_carro && subPage == 2 &&
+                <>     
+                    <div className='opcaoCliente' onClick={() => setSubPage(1)}>
+                        <p>Voltar</p>
+                    </div>    
+
+                    <div className='opcaoCliente'>
+                        <p>{carroSelect}</p>
+                    </div>
+
+                    <div className='opcaoCliente'
+                        onClick={() => SelecionarCorrida()}
+                        >
+                        <p>Selecionar Corrida</p>
+                    </div>
                 </>
             }
         </div>

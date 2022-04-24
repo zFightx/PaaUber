@@ -24,6 +24,7 @@ const CreateMap = (event, setterObject) => {
     
     ReadFile(event, 1, (result) => {
         // Retirando a primeira linha do arquivo texto
+        // verifyGrafo(result);
         let lines = result.split('\n');
         lines.splice(0, 1);
         let finalResult = lines.join('\n');
@@ -40,7 +41,6 @@ const CreateMap = (event, setterObject) => {
 
         // Preenchendo o grafo do mapa
         for( var i = 0; i < resultArray.length ; i = i + 9 ) {
-            console.log(resultArray[i], resultArray[i+1], resultArray[i+2], resultArray[i+3], resultArray[i+4], resultArray[i+7], resultArray[i+8]);
             const [aresta_n, v_origem, loc_v_origem_x, loc_v_origem_y, v_destino, distancia, velocidade] = [resultArray[i], resultArray[i+1], resultArray[i+2], resultArray[i+3], resultArray[i+4], resultArray[i+7], resultArray[i+8]];
             
             arestas[aresta_n] = {
@@ -191,11 +191,12 @@ function CarroNode(carro_id, loc_carro_x, loc_carro_y, aresta_id) {
             y: loc_carro_y
         },
         aresta: aresta_id,
-        tem_cliente: false,
+        tem_cliente: [],
+        ocupado: false,
     }
 
     return carro;
 }
 
 
-export { ReadFile, CreateMap, CreateClientes, CreateCarros };
+export { ReadFile, CreateMap, CreateClientes, CreateCarros, CarroNode };
