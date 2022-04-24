@@ -1,5 +1,5 @@
 Carro_id loc_carro_x loc_carro_y aresta_id
 53 7.4 4.4 3
-54 3.5 5.0 6
+54 3.5 6.0 6
 55 2.2 4.3 1
 56 6.5 6.2 8

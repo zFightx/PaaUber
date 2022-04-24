@@ -5,6 +5,7 @@ import DFSCaminho from '../../utils/DFS';
 import AEstrela from '../../utils/AEstrela';
 import { verticeMaisProximo } from '../../utils/outros';
 import mergeSort from '../../algoritmos/mergesort';
+import UserImg from '../../assets/user.png';
 
 const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho}) => {
     const [subPage, setSubPage] = useState(0);
@@ -20,10 +21,30 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
                 onMouseLeave={() => {ApagarCaminho(cliente.resultado.caminho)}}
                 onClick={() => SelectCliente(cliente)}
             >
-                <p>{cliente.id}</p>
-                <p>{cliente.resultado.tempo.toFixed(2)} horas</p>
-                <p>{cliente.resultado.dist.toFixed(2)} km</p>
-                <p>{cliente.resultado.tempo.toFixed(2)} horas</p>
+                <div className='opcaoText'>
+                    <p className='white'>{cliente.id}</p>
+                    <div className='opcaoTextLine'>
+                        {   !comTempo &&
+                            <>
+                                <i className="fas fa-road"></i>
+                                <p>{cliente.resultado.dist.toFixed(2)} km</p>
+                                <i className="far fa-clock"></i>
+                                <p>{cliente.resultado.tempo.toFixed(2)} horas</p>
+                            </>
+                        }
+
+                        {   comTempo &&
+                            <>
+                                <i className="far fa-clock"></i>
+                                <p>{cliente.resultado.tempo.toFixed(2)} horas</p>
+                                <i className="fas fa-road"></i>
+                                <p>{cliente.resultado.dist.toFixed(2)} km</p>
+                            </>
+                        }
+                        {/* <p>{cliente.resultado.tempo.toFixed(2)} horas</p> */}
+                    </div>
+                </div>
+                <i className="fas fa-angle-right"></i>
             </div>
         );
     }
@@ -96,12 +117,44 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
             <div className='opcaoCliente' key={`caminho_${index}`} 
                 onMouseEnter={() => {DesenharCaminho(caminho.resultado.vertices, secondColor)}}
                 onMouseLeave={() => {ApagarCaminho(caminho.resultado.vertices)}}
+                onClick={() => TrocarCaminho(caminho.resultado, secondColor)}
             >
-                <p>{`caminho_${index}`}</p>
-                <p>{caminho.resultado.tempo.toFixed(2)} horas</p>
-                <p>{caminho.resultado.dist.toFixed(2)} km</p>
+                <div className='opcaoText'>
+                    <p className='white'>{`Estrada ${index+1}`}</p>
+                    {   !comTempo &&
+                        <div className='opcaoTextLine'>
+                            <i className="fas fa-road"></i>
+                            <p>{caminho.resultado.dist.toFixed(2)} km</p>
+                            <i className="far fa-clock"></i>
+                            <p>{caminho.resultado.tempo.toFixed(2)} horas</p>
+                        </div>
+                    }
+                    {   comTempo &&
+                        <div className='opcaoTextLine'>
+                            <i className="far fa-clock"></i>
+                            <p>{caminho.resultado.tempo.toFixed(2)} horas</p>
+                            <i className="fas fa-road"></i>
+                            <p>{caminho.resultado.dist.toFixed(2)} km</p>
+                        </div>
+                    }
+                </div>
             </div>
         );
+    }
+
+    const TrocarCaminho = (caminho, second) => {
+        const novoClienteSelect = {...clienteSelect};
+        caminho.caminho = caminho.vertices;
+
+        if(!second){
+            novoClienteSelect.resultado = caminho;
+        }
+        else{
+            novoClienteSelect.resultado2 = caminho;
+        }
+
+        setClienteSelect(novoClienteSelect);
+        setSubPage(2);
     }
 
     const AceitarCorrida = () => {
@@ -110,13 +163,14 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
     }
 
     return (
-        <div className="blocoCliente">
+        <div className="blocoCliente blocoCarro">
             <p className='titleCliente'>Carro {carro.id}</p>
             {
                 carro.ocupado &&
                 <> 
                     <div className='opcaoCliente'>
                         <p>Carro indo para o cliente...</p>
+                        <i className="fas fa-times-circle gray"></i>
                     </div>
                 </>
             }
@@ -125,15 +179,21 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
                     <div className='opcaoCliente'
                         onClick={() => VerClientes(false)}
                     >
-                        <p>Ver Solicitações por distância</p>
-                        {/* <p>{carro.resultado.tempo.toFixed(2)} horas</p> */}
+                        <div className='opcaoText'>
+                            <p>Ver Solicitações</p>
+                            <p>por distância</p>
+                        </div>
+                        <i className="fas fa-angle-right"></i>
                     </div>
 
                     <div className='opcaoCliente'
                         onClick={() => VerClientes(true)}
                     >
-                        <p>Ver Solicitações por tempo</p>
-                        {/* <p>{carro.resultado.tempo.toFixed(2)} horas</p> */}
+                        <div className='opcaoText'>
+                            <p>Ver Solicitações</p>
+                            <p>por tempo</p>
+                        </div>
+                        <i className="fas fa-angle-right"></i>
                     </div>
                 </>
             }
@@ -142,6 +202,7 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
                     <div className='opcaoCliente'
                         onClick={() => setSubPage(0)}
                     >
+                        <i className="fas fa-angle-left"></i>
                         <p>Voltar</p>
                         {/* <p>{carro.resultado.tempo.toFixed(2)} horas</p> */}
                     </div>
@@ -154,38 +215,83 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
                     <div className='opcaoCliente'
                         onClick={() => setSubPage(1)}
                     >
+                        <i className="fas fa-angle-left"></i>
                         <p>Voltar</p>
                     </div>
 
-                    <div className='opcaoCliente'>
+                    <div className='opcaoImage'>
+                        <div className='opcaoImageBox'>
+                            <img src={UserImg} />
+                        </div>
+                        <p>Aceitar corrida de {clienteSelect.id}?</p>
+                        {comTempo && 
+                            <>
+                                <p>Tempo: {clienteSelect.resultado.tempo.toFixed(2)} horas</p>
+                                <p>Total: {(clienteSelect.resultado.tempo + clienteSelect.resultado2.tempo).toFixed(2)} horas</p>
+                            </>
+                        }
+                        {!comTempo && 
+                            <>
+                                <p>Distância: {clienteSelect.resultado.dist.toFixed(2)} km</p>
+                                <p>Distância Total: {(clienteSelect.resultado.dist + clienteSelect.resultado2.dist).toFixed(2)} km</p>
+                            </>
+                        }
+                    </div>
+
+                    {/* <div className='opcaoCliente'>
                         <p>{clienteSelect.id}</p>
+                    </div> */}
+
+                    <div className='opcaoCliente'
+                        onMouseEnter={() => {ApagarCaminho(clienteSelect.resultado2.caminho);DesenharCaminho(clienteSelect.resultado.caminho, false)}}
+                        onMouseLeave={() => {ApagarCaminho(clienteSelect.resultado.caminho)}}
+                    >
+                        <div className='opcaoText'>
+                            <p className='white'>Caminho Cliente</p>
+                            <div className='opcaoTextLine'>
+                                <i className="fas fa-road"></i>
+                                <p>{clienteSelect.resultado.dist.toFixed(2)} km</p>
+                                <i className="far fa-clock"></i>
+                                <p>{clienteSelect.resultado.tempo.toFixed(2)} horas</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div className='opcaoCliente'
                         onMouseEnter={() => {ApagarCaminho(clienteSelect.resultado.caminho);DesenharCaminho(clienteSelect.resultado2.caminho, true)}}
                         onMouseLeave={() => {ApagarCaminho(clienteSelect.resultado2.caminho)}}
                     >
-                        <p>Melhor Trajeto</p>
-                        <p>{clienteSelect.resultado2.dist.toFixed(2)} km</p>
-                        <p>{clienteSelect.resultado2.tempo.toFixed(2)} horas</p>
+
+                        <div className='opcaoText'>
+                            <p className='white'>Trajeto Destino</p>
+                            <div className='opcaoTextLine'>
+                                <i className="fas fa-road"></i>
+                                <p>{clienteSelect.resultado2.dist.toFixed(2)} km</p>
+                                <i className="far fa-clock"></i>
+                                <p>{clienteSelect.resultado2.tempo.toFixed(2)} horas</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div className='opcaoCliente'
                         onClick={() => VerCaminhos()}
                     >
                         <p>Outras opções de ir até o cliente</p>
+                        <i className="fas fa-angle-right"></i>
                     </div>
 
                     <div className='opcaoCliente'
                         onClick={() => VerTrajetos()}
                     >
                         <p>Outras opções de trajetos até o destino</p>
+                        <i className="fas fa-angle-right"></i>
                     </div>
 
-                    <div className='opcaoCliente'
+                    <div className='opcaoButton'
                         onClick={() => AceitarCorrida()}
-                    >
+                        >
                         <p>Aceitar Corrida</p>
+                        <i className="fas fa-check-circle"></i>
                     </div>
                 </>
             }
@@ -194,6 +300,7 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
                     <div className='opcaoCliente'
                         onClick={() => setSubPage(2)}
                     >
+                        <i className="fas fa-angle-left"></i>
                         <p>Voltar</p>
                         {/* <p>{carro.resultado.tempo.toFixed(2)} horas</p> */}
                     </div>
@@ -206,6 +313,7 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
                     <div className='opcaoCliente'
                         onClick={() => setSubPage(2)}
                     >
+                        <i className="fas fa-angle-left"></i>
                         <p>Voltar</p>
                         {/* <p>{carro.resultado.tempo.toFixed(2)} horas</p> */}
                     </div>

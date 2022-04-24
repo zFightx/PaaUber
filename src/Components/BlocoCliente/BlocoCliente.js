@@ -19,7 +19,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
         for(const id in carros){
             const carro = carros[id];
 
-            if(!carro.ocupado){
+            if(!carro.ocupado && !carro.tem_cliente.includes(cliente.id)){
                 const start = vertices[verticeMaisProximo(carro.loc.x, carro.loc.y, vertices)];
                 const end = vertices[verticeMaisProximo(cliente.loc.x, cliente.loc.y, vertices)];
                 
@@ -47,6 +47,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
 
     const SelecionarCorrida = () =>{
         carros[carroSelect.id].tem_cliente.push(cliente.id);
+        setSubPage(0);
     }
 
     const RenderCarros = () => {
@@ -75,7 +76,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                     >
                         <p>{carro.id}</p>
                         <p>{carro.resultado.dist.toFixed(2)} Km</p>
-                        {/* <i class="fas fa-angle-right"></i> */}
+                        {/* <i className="fas fa-angle-right"></i> */}
                     </div>
                 );
             });
@@ -90,6 +91,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                 <> 
                     <div className='opcaoCliente'>
                         <p>Cliente Aguardando o Motorista</p>
+                        <i className="fas fa-times-circle gray"></i>
                     </div>
                 </>
             }
@@ -101,7 +103,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                             <p>Ver Carros Livres</p>
                             <p>Pela distância</p>
                         </div>
-                        <i class="fas fa-angle-right"></i>
+                        <i className="fas fa-angle-right"></i>
                     </div>
                     
                     <div className='opcaoCliente' onClick={() => verCarros(true)}>
@@ -110,7 +112,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                             <p>Pelo tempo</p>
                         </div>
 
-                        <i class="fas fa-angle-right"></i>
+                        <i className="fas fa-angle-right"></i>
                     </div>
                 </>
             }
@@ -118,7 +120,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                 !cliente.tem_carro && subPage == 1 &&
                 <>     
                     <div className='opcaoCliente' onClick={() => setSubPage(0)}>
-                        <i class="fas fa-angle-left"></i>
+                        <i className="fas fa-angle-left"></i>
                         <div className='opcaoText'>
                             <p>Voltar</p>
                         </div>  
@@ -127,7 +129,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                     {RenderCarros()}
                 </>
             }
-            
+
             {
                 !cliente.tem_carro && subPage == 2 &&
                 <>     
@@ -149,7 +151,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                         onClick={() => SelecionarCorrida()}
                         >
                         <p>Selecionar Corrida</p>
-                        <i class="fas fa-check-circle"></i>
+                        <i className="fas fa-check-circle"></i>
                     </div>
                 </>
             }

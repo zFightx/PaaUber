@@ -116,12 +116,12 @@ function App() {
         if(nodeId.includes("cl_")){
             setClientId(nodeId);
             setShowBlocoCarro(false);
-            setShowBlocoCliente(true);
+            setShowBlocoCliente((value) => !value);
         }
         else if(nodeId.includes("ca_")){
             setCarroId(nodeId);
             setShowBlocoCliente(false);
-            setShowBlocoCarro(true);
+            setShowBlocoCarro((value) => !value);
         }
 
 
@@ -137,14 +137,14 @@ function App() {
         caminho.forEach((vertice, index) => {
             dataGrafo.nodes.forEach(node => {
                 if(vertice.numero == node.id){
-                    node.color = secondColor ? "#562cca70" : "orange";
+                    node.color = secondColor ? "#562cca" : "#3a73c9";
                 }
             });
 
             dataGrafo.links.forEach(link => {
                 if(index != caminho.length-1){
                     if(link.source == vertice.numero && link.target == caminho[index+1].numero){
-                        link.color = secondColor ? "red" : "green";
+                        link.color = secondColor ? "red" : "#3a73c9";
                     }
                 }
             });
