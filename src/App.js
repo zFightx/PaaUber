@@ -155,7 +155,7 @@ function App() {
     setShowGrafo(true);
     setUmaVez(true);
 
-    console.log("rodou");
+    // console.log("rodou");
     setTimeout(() => {
       dataGrafo.focusedNodeId = "center";
       const data = { ...dataGrafo };
@@ -193,7 +193,7 @@ function App() {
     // }
 
     if(!interval){
-        console.log("ATIVOU INTERVAL");
+        // console.log("ATIVOU INTERVAL");
         setVarInterval(true);
         setInterval(() => {
             MoverCarro();
@@ -202,10 +202,10 @@ function App() {
   };
 
   const MoverCarro = () =>{
-    console.log(corridas);
+    // console.log(corridas);
 
     corridas.forEach((corrida, corrida_id) => {
-        console.log(corrida.movendo);
+        // console.log(corrida.movendo);
         if(corrida[corrida.movendo].caminho.length < 2){
             if(corrida.movendo == "toCliente"){
                 let node_cliente = null;
@@ -228,7 +228,7 @@ function App() {
                 carros[corrida.carro.id].ocupado = false;
                 clientes[corrida.cliente.id].tem_carro = false;
                 
-                console.log(corrida.toDestino.caminho[0]);
+                // console.log(corrida.toDestino.caminho[0]);
                 corrida.bkpCliente.x = corrida.toDestino.caminho[0].loc.x * 50;
                 corrida.bkpCliente.y = corrida.toDestino.caminho[0].loc.y * 50;
                 dataGrafo.nodes.push(corrida.bkpCliente);
