@@ -6,6 +6,7 @@ const BlocoLeitura = ({
   position,
   onChangeInput,
   onClickButton,
+  onClickBackButton,
   erroLeitura,
 }) => {
   const titulos = ["Arestas", "Carros", "Clientes"];
@@ -29,6 +30,15 @@ const BlocoLeitura = ({
         disabled={erroLeitura}
       >
         Avançar
+      </button>
+      <button
+        className={`button backButton ${
+          position === "1" ? "disabledButton" : ""
+        }`}
+        onClick={onClickBackButton}
+        disabled={position == "1"}
+      >
+        Voltar
       </button>
       <div className="positionRow">
         <div className={`circle ${position == "1" ? "activeCircle" : ""}`} />

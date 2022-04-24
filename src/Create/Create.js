@@ -15,6 +15,7 @@ const ReadFile = async (event, tipo, cb) => {
     //     setLeituraCarro(read)
     // }
   };
+  console.log(event.target.files[0]);
   fr.readAsText(event.target.files[0]);
 };
 

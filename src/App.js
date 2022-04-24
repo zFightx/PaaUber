@@ -379,6 +379,7 @@ function App() {
               position="1"
               onChangeInput={(e) => CreateMap(e, setterObjectGrafo)}
               onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)}
+              onClickBackButton={() => setPosicaoBloco((antiga) => antiga - 1)}
               erroLeitura={erroLeituraGrafo}
             />
           )}
@@ -388,6 +389,7 @@ function App() {
               position="2"
               onChangeInput={(e) => CreateCarros(e, setterObjectCarros)}
               onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)}
+              onClickBackButton={() => setPosicaoBloco((antiga) => antiga - 1)}
               erroLeitura={erroLeituraCarros}
             />
           )}
@@ -397,6 +399,7 @@ function App() {
               position="3"
               onChangeInput={(e) => CreateClientes(e, setterObjectClientes)}
               onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)}
+              onClickBackButton={() => setPosicaoBloco((antiga) => antiga - 1)}
               erroLeitura={erroLeituraClientes}
             />
           )}
