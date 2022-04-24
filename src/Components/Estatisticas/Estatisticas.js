@@ -7,8 +7,8 @@ const Estatisticas = ({dadosCorridas}) => {
     return(
         <div className="containerEstatisticas">
             <div className="titleEstatisticas">Estatísticas</div>
-            <div className="data">Tempo médio de espera: {tempoMedioEspera}</div>
-            <div className="data">Tempo médio de viagem: {tempoMedioViagens}</div>
+            <div className="data">Tempo médio de espera: {tempoMedioEspera || 0}</div>
+            <div className="data">Tempo médio de viagem: {tempoMedioViagens || 0}</div>
         </div>
     )
 }

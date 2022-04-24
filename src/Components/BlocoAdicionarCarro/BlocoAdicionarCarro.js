@@ -19,7 +19,7 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
     const [idVertice, setIdVertice] = useState('');
     const [xVertice, setXVertice] = useState('');
     const [yVertice, setYVertice] = useState('');
-    const [idAresta, setIdAresta] = useState('');
+    const [verticesDestino, setVerticeDestino] = useState('');
 
 
     const handleSubmitCarro = event => {
@@ -44,6 +44,11 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
         const vertice = Node(0, idVertice, xVertice, yVertice, [], 0, 0);
         setGrafo (grafo => {grafo[idVertice] = vertice; return grafo})
         setDataGrafo (data => {data.nodes.push({id: idVertice, x: 50*xVertice, y: 50*yVertice}); return {...data}});
+    }
+
+    const handleSubmitAresta = event => {
+        event.preventDefault();
+        alert('Aresta adicionado!');
     }
     
     const handleChangeIdCarro = event => {
@@ -88,6 +93,10 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
 
     const handleChangeYVertice = event => {
         setYVertice(event.target.value);
+    };
+
+    const handleChangeVerticeDestino = event => {
+        setVerticeDestino(event.target.value);
     };
 
     const RenderCoordCarros = () =>{
@@ -310,16 +319,13 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
                 
                     <div className='blocoAdicionarInputs'>
 
-                        <label className='labelAdicionarCarro'>Digite o id do vértice de origem da aresta:</label>
+                        <label className='labelAdicionarCarro'>Digite o id do vértice de origem:</label>
                         <input className='labelAdicionarCarros' placeholder='valor inteiro' type="text" onChange={handleChangeIdVertice} />
 
-                        <label className='labelAdicionarCarro'>Digite a posição x do vértice:</label>
-                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeXVertice} />
-                        
-                        <label className='labelAdicionarCarro'>Digite a posição y do vértice:</label>
-                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeYVertice} />
+                        <label className='labelAdicionarCarro'>Digite o id do vértice de destino:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeVerticeDestino} />
 
-                        <input onClick={handleSubmitVertice} className='submitAdicionarCarro' type="submit" value="Enviar" />
+                        <input onClick={handleSubmitAresta} className='submitAdicionarCarro' type="submit" value="Enviar" />
 
                     </div> 
                 
