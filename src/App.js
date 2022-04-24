@@ -102,8 +102,7 @@ function App() {
         fontColor: "#E8DF2E",
       });
     }
-
-    setDataGrafo(dataGrafo);
+    setDataGrafo({...dataGrafo});
   };
 
   const ConvertClientes = () => {
@@ -355,6 +354,46 @@ function App() {
     setDataGrafo(data);
   };
 
+  const DeletarCarro = (carroId) => {
+    console.log("Tentando apagar", carroId);
+
+    dataGrafo.nodes.forEach((node, index) => {
+        if(node.id == carroId){
+            dataGrafo.nodes.splice(index, 1);
+        }
+    });
+
+    delete carros[carroId];
+        
+    console.log(carros);
+    console.log(dataGrafo);
+
+    const data = { ...dataGrafo };
+    setCarros({...carros});
+    setDataGrafo(data);
+    setShowBlocoCarro(false);
+  }
+
+  const DeletarCliente = (clienteId) => {
+    console.log("Tentando apagar", clienteId);
+
+    dataGrafo.nodes.forEach((node, index) => {
+        if(node.id == clienteId){
+            dataGrafo.nodes.splice(index, 1);
+        }
+    });
+
+    delete clientes[clienteId];
+        
+    console.log(clientes);
+    console.log(dataGrafo);
+
+    const data = { ...dataGrafo };
+    setClientes({...clientes});
+    setDataGrafo(data);
+    setShowBlocoCliente(false);
+  }
+
   useEffect(() => {
     ConvertData();
     ConvertCarros();
@@ -424,6 +463,7 @@ function App() {
           cliente={clientes[clienteId]}
           DesenharCaminho={DesenharCaminho}
           ApagarCaminho={ApagarCaminho}
+          DeletarCliente={DeletarCliente}
         />
       )}
       {showBlocoCarro && (
@@ -435,6 +475,7 @@ function App() {
           ApagarCaminho={ApagarCaminho}
           setTemposCorridas={setTemposCorridas}
           corridas={corridas}
+          DeletarCarro={DeletarCarro}
         />
       )}
     </div>

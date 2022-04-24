@@ -31,7 +31,7 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
         alert('Cliente adicionado!');
         const cliente = ClienteNode(idCliente, positionXCliente, positionYCliente, destinoXCliente, destinoYCliente);
         setClientes (clientes => {clientes['cl_'+idCliente] = cliente; return clientes});
-        setDataGrafo (data => {data.nodes.push({id: 'cl_'+idCliente, x: 50*positionXCliente, y: 50*positionYCliente, svg: traveler, "labelPosition": "top", "fontColor": "#E8DF2E"}); return {...data}});
+        setDataGrafo (data => {data.nodes.push({id: 'cl_'+idCliente, x: 50*positionXCliente, y: 50*positionYCliente, svg: traveler, "labelPosition": "top", "fontColor": "#6DADD6"}); return {...data}});
     }
     
     const handleChangeIdCarro = event => {
@@ -121,7 +121,7 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
                         <label className='labelAdicionarCarro'>Digite a posição Y do carro:</label>
                         <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeYCarro} />
 
-                        <input onChange={handleSubmitCarro} className='submitAdicionarCarro' type="submit" value="Enviar" />
+                        <input onClick={handleSubmitCarro} className='submitAdicionarCarro' type="submit" value="Enviar" />
                     </div>
                 </>
             
@@ -154,7 +154,7 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
                         <label className='labelAdicionarCarro'>Digite a posição y do destino:</label>
                         <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeDestinoYCliente} />
 
-                        <input onChange={handleSubmitCliente} className='submitAdicionarCarro' type="submit" value="Enviar" />
+                        <input onClick={handleSubmitCliente} className='submitAdicionarCarro' type="submit" value="Enviar" />
 
                     </div>
                 

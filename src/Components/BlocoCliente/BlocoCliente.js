@@ -7,7 +7,7 @@ import { verticeMaisProximo } from '../../utils/outros';
 import mergeSort from '../../algoritmos/mergesort';
 import CarImg from '../../assets/car.png';
 
-const BlocoCliente = ({addClass, carros, vertices, cliente, DesenharCaminho, ApagarCaminho}) => {
+const BlocoCliente = ({addClass, carros, vertices, cliente, DesenharCaminho, ApagarCaminho, DeletarCliente}) => {
     const [subPage, setSubPage] = useState(0);
     const [listaCarros, setListaCarros] = useState([]);
     const [comTempo, setComTempo] = useState(false);
@@ -113,6 +113,16 @@ const BlocoCliente = ({addClass, carros, vertices, cliente, DesenharCaminho, Apa
                         </div>
 
                         <i className="fas fa-angle-right"></i>
+                    </div>
+
+                    <div className='opcaoCliente'
+                        onClick={() => DeletarCliente(cliente.id)}
+                    >
+                        <div className='opcaoText'>
+                            <p>Excluir</p>
+                            <p>apagar totalmente</p>
+                        </div>
+                        <i class="fas fa-times"></i>
                     </div>
                 </>
             }

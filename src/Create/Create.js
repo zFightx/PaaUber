@@ -186,7 +186,7 @@ const CreateCarros = (event, setterObject) => {
 
       carroGraph[node.id] = node;
     }
-
+    
     setterObject.setCarros(carroGraph);
   });
 };
@@ -257,4 +257,4 @@ function CarroNode(carro_id, loc_carro_x, loc_carro_y, aresta_id) {
   return carro;
 }
 
-export { ReadFile, CreateMap, CreateClientes, CreateCarros, CarroNode, ClienteNode };
+export { ReadFile, CreateMap, CreateClientes, CreateCarros, CarroNode, ClienteNode, Node };
