@@ -68,6 +68,7 @@ const verifyCarros = (result) => {
   let linhas = result.split("\n");
 
   if (!verifyColunas(valoresColunas, linhas)) {
+    console.log("COLUNAS");
     return false;
   }
 
@@ -93,6 +94,14 @@ const verifyCarros = (result) => {
       temValorVazio ||
       temLetra
     ) {
+      console.log(
+        isCarroIdRepetido,
+        isCarroIdInteiro,
+        isArestaIdInteiro,
+        isMesmoTamanho,
+        temValorVazio,
+        temLetra
+      );
       return false;
     }
     carroIds.push(carroId);

@@ -16,10 +16,16 @@ import DFSCaminho from "./utils/DFS";
 
 function App() {
   const [grafo, setGrafo] = useState({});
+  const stateGrafoLido = useState(null);
+  const [grafoLido, setGrafoLido] = stateGrafoLido;
   const [erroLeituraGrafo, setErroLeituraGrafo] = useState(false);
   const [carros, setCarros] = useState({});
+  const stateCarrosLidos = useState(null);
+  const [carrosLidos, setCarrosLidos] = stateCarrosLidos;
   const [erroLeituraCarros, setErroLeituraCarros] = useState(false);
   const [clientes, setClientes] = useState({});
+  const stateClientesLidos = useState(null);
+  const [clientesLidos, setClientesLidos] = stateClientesLidos;
   const [erroLeituraClientes, setErroLeituraClientes] = useState(false);
   const [arestas, setArestas] = useState({});
   const [showGrafo, setShowGrafo] = useState(false);
@@ -40,6 +46,7 @@ function App() {
 
   const setterObjectGrafo = {
     setGrafo: setGrafo,
+    setArquivoLido: setGrafoLido,
     setErroLeituraGrafo: setErroLeituraGrafo,
     setArestas: setArestas,
     setShowGrafo: setShowGrafo,
@@ -47,11 +54,13 @@ function App() {
 
   const setterObjectCarros = {
     setCarros: setCarros,
+    setArquivoLido: setCarrosLidos,
     setErroLeituraCarros: setErroLeituraCarros,
   };
 
   const setterObjectClientes = {
     setClientes: setClientes,
+    setArquivoLido: setClientesLidos,
     setErroLeituraClientes: setErroLeituraClientes,
   };
 
@@ -88,7 +97,14 @@ function App() {
 
   const ConvertCarros = () => {
     const keys = Object.keys(carros);
-    if (keys.length == 0 || umaVez) return;
+    if (keys.length == 0) return;
+
+    console.log(dataGrafo);
+    let newNodes = dataGrafo.nodes.filter(
+      (nodeCarro) => nodeCarro.id.search("ca") === -1
+    );
+    dataGrafo.nodes = newNodes;
+    console.log(dataGrafo);
 
     for (const numero in carros) {
       const carro = carros[numero];
@@ -107,7 +123,12 @@ function App() {
 
   const ConvertClientes = () => {
     const keys = Object.keys(clientes);
-    if (keys.length == 0 || umaVez) return;
+    if (keys.length == 0) return;
+
+    let newNodes = dataGrafo.nodes.filter(
+      (nodeCliente) => nodeCliente.id.search("cl") === -1
+    );
+    dataGrafo.nodes = newNodes;
 
     for (const numero in clientes) {
       const cliente = clientes[numero];
@@ -151,21 +172,10 @@ function App() {
     // console.log(delta_x, delta_y);
 
     setDataGrafo(dataGrafo);
-    setShowGrafo(true);
+    // setShowGrafo(true);
     setUmaVez(true);
 
-    // console.log("rodou");
-    setTimeout(() => {
-      dataGrafo.focusedNodeId = "center";
-      const data = { ...dataGrafo };
-      setDataGrafo(data);
-
-      setTimeout(() => {
-        dataGrafo.focusedNodeId = null;
-        const data = { ...dataGrafo };
-        setDataGrafo(data);
-      }, 1000);
-    }, 1000);
+    console.log("rodou");
   };
 
   const onClickNode = (nodeId) => {
@@ -184,118 +194,118 @@ function App() {
     // }
 
     // console.log(carros);
-    // console.log(clientes);    
-    
+    // console.log(clientes);
+
     // if(interval){
     //     clearInterval(interval);
     //     interval = null;
     // }
 
-    if(!interval){
-        // console.log("ATIVOU INTERVAL");
-        setVarInterval(true);
-        setInterval(() => {
-            MoverCarro();
-        }, 1000);
+    if (!interval) {
+      // console.log("ATIVOU INTERVAL");
+      setVarInterval(true);
+      setInterval(() => {
+        MoverCarro();
+      }, 1000);
     }
   };
 
-  const MoverCarro = () =>{
+  const MoverCarro = () => {
     // console.log(corridas);
 
     corridas.forEach((corrida, corrida_id) => {
-        // console.log(corrida.movendo);
-        if(corrida[corrida.movendo].caminho.length < 2){
-            if(corrida.movendo == "toCliente"){
-                let node_cliente = null;
-                dataGrafo.nodes.forEach((node, index) =>{ 
-                    if(node.id == corrida.cliente.id){
-                        node_cliente = node;
-                        dataGrafo.nodes.splice(index, 1);
-                    }
-                });
-
-                const data = {...dataGrafo};
-                setDataGrafo(data);
-
-                corrida.movendo = "toDestino";
-                corrida.bkpCliente = node_cliente;
+      // console.log(corrida.movendo);
+      if (corrida[corrida.movendo].caminho.length < 2) {
+        if (corrida.movendo == "toCliente") {
+          let node_cliente = null;
+          dataGrafo.nodes.forEach((node, index) => {
+            if (node.id == corrida.cliente.id) {
+              node_cliente = node;
+              dataGrafo.nodes.splice(index, 1);
             }
-            else{
-                const index_cliente = carros[corrida.carro.id].tem_cliente.find(element => element == corrida.cliente.id);
-                carros[corrida.carro.id].tem_cliente.splice(index_cliente, 1);
-                carros[corrida.carro.id].ocupado = false;
-                clientes[corrida.cliente.id].tem_carro = false;
-                
-                // console.log(corrida.toDestino.caminho[0]);
-                corrida.bkpCliente.x = corrida.toDestino.caminho[0].loc.x * 50;
-                corrida.bkpCliente.y = corrida.toDestino.caminho[0].loc.y * 50;
-                dataGrafo.nodes.push(corrida.bkpCliente);
-                const data = {...dataGrafo};
-                setDataGrafo(data);
+          });
 
-                corridas.splice(corrida_id, 1);
-            }
-            
-            return;
+          const data = { ...dataGrafo };
+          setDataGrafo(data);
+
+          corrida.movendo = "toDestino";
+          corrida.bkpCliente = node_cliente;
+        } else {
+          const index_cliente = carros[corrida.carro.id].tem_cliente.find(
+            (element) => element == corrida.cliente.id
+          );
+          carros[corrida.carro.id].tem_cliente.splice(index_cliente, 1);
+          carros[corrida.carro.id].ocupado = false;
+          clientes[corrida.cliente.id].tem_carro = false;
+
+          // console.log(corrida.toDestino.caminho[0]);
+          corrida.bkpCliente.x = corrida.toDestino.caminho[0].loc.x * 50;
+          corrida.bkpCliente.y = corrida.toDestino.caminho[0].loc.y * 50;
+          dataGrafo.nodes.push(corrida.bkpCliente);
+          const data = { ...dataGrafo };
+          setDataGrafo(data);
+
+          corridas.splice(corrida_id, 1);
         }
 
-        const pontoA = {...corrida[corrida.movendo].caminho[0].loc};
-        const pontoB = {...corrida[corrida.movendo].caminho[1].loc};
+        return;
+      }
 
-        pontoA.x *= 50;
-        pontoA.y *= 50;
-        pontoB.x *= 50;
-        pontoB.y *= 50;
+      const pontoA = { ...corrida[corrida.movendo].caminho[0].loc };
+      const pontoB = { ...corrida[corrida.movendo].caminho[1].loc };
 
-        // m = (y2 - y1) / (x2 - x1)
-        const coeficiente = (pontoB.y - pontoA.y) / (pontoB.x - pontoA.x);
+      pontoA.x *= 50;
+      pontoA.y *= 50;
+      pontoB.x *= 50;
+      pontoB.y *= 50;
 
-        // y = mx + n
-        const n =  pontoA.y - (coeficiente*pontoA.x);
+      // m = (y2 - y1) / (x2 - x1)
+      const coeficiente = (pontoB.y - pontoA.y) / (pontoB.x - pontoA.x);
 
-        corrida.moveu += 15;
+      // y = mx + n
+      const n = pontoA.y - coeficiente * pontoA.x;
 
-        let sinal = (pontoA.x < pontoB.x) ? 1 : -1;
-        
-        const x = pontoA.x + (sinal * corrida.moveu);
-        const y = (coeficiente*x) + n;
-        // console.log(x, y);
+      corrida.moveu += 15;
 
-        if(sinal < 0){
-            if(x <= pontoB.x){
-                corrida[corrida.movendo].caminho.splice(0, 1);
-                corrida.moveu = 0;
-            }
+      let sinal = pontoA.x < pontoB.x ? 1 : -1;
+
+      const x = pontoA.x + sinal * corrida.moveu;
+      const y = coeficiente * x + n;
+      // console.log(x, y);
+
+      if (sinal < 0) {
+        if (x <= pontoB.x) {
+          corrida[corrida.movendo].caminho.splice(0, 1);
+          corrida.moveu = 0;
         }
-        else{
-            if(x >= pontoB.x){
-                corrida[corrida.movendo].caminho.splice(0, 1);
-                corrida.moveu = 0;
-            }
+      } else {
+        if (x >= pontoB.x) {
+          corrida[corrida.movendo].caminho.splice(0, 1);
+          corrida.moveu = 0;
         }
+      }
 
-        let bkpNode = null;
-        dataGrafo.nodes.forEach((node, index) => {
-            if(node.id == corrida.carro.id){
-                node.x = x;
-                node.y = y;
-                bkpNode = node;
+      let bkpNode = null;
+      dataGrafo.nodes.forEach((node, index) => {
+        if (node.id == corrida.carro.id) {
+          node.x = x;
+          node.y = y;
+          bkpNode = node;
 
-                dataGrafo.nodes.splice(index, 1);
-            }
-        });
+          dataGrafo.nodes.splice(index, 1);
+        }
+      });
 
-        setTimeout(() => {
-            dataGrafo.nodes.push(bkpNode);
-            const data = { ...dataGrafo };
-            setDataGrafo(data); 
-        },100);
+      setTimeout(() => {
+        dataGrafo.nodes.push(bkpNode);
+        const data = { ...dataGrafo };
+        setDataGrafo(data);
+      }, 100);
     });
-    
+
     const data = { ...dataGrafo };
-    setDataGrafo(data);     
-  }
+    setDataGrafo(data);
+  };
 
   const DesenharCaminho = (caminho, include, secondColor) => {
     caminho.forEach((vertice, index) => {
@@ -308,7 +318,10 @@ function App() {
 
       dataGrafo.links.forEach((link) => {
         if (index != caminho.length - 1) {
-          if (link.source == vertice.numero && link.target == caminho[index + 1].numero) {
+          if (
+            link.source == vertice.numero &&
+            link.target == caminho[index + 1].numero
+          ) {
             link.color = secondColor ? "red" : "#3a73c9";
             link.opacity = "1.0";
           }
@@ -331,21 +344,21 @@ function App() {
 
   const ApagarCaminho = (caminho) => {
     // caminho.forEach((vertice, index) => {
-      dataGrafo.nodes.forEach((node) => {
-        node.color = "red";
-        node.opacity = null;
-        // if (vertice.numero == node.id) {
-        // }
-      });
+    dataGrafo.nodes.forEach((node) => {
+      node.color = "red";
+      node.opacity = null;
+      // if (vertice.numero == node.id) {
+      // }
+    });
 
-      dataGrafo.links.forEach((link) => {
-        link.color = "#A9A29D";
-        link.opacity = null;
-        // if (index != caminho.length - 1) {
-        //   if (link.source == vertice.numero && link.target == caminho[index + 1].numero) {
-        //   }
-        // }
-      });
+    dataGrafo.links.forEach((link) => {
+      link.color = "#A9A29D";
+      link.opacity = null;
+      // if (index != caminho.length - 1) {
+      //   if (link.source == vertice.numero && link.target == caminho[index + 1].numero) {
+      //   }
+      // }
+    });
     // });
 
     const data = { ...dataGrafo };
@@ -396,9 +409,31 @@ function App() {
 
   useEffect(() => {
     ConvertData();
+  }, [grafo]);
+
+  useEffect(() => {
     ConvertCarros();
+  }, [carros]);
+
+  useEffect(() => {
     ConvertClientes();
-  }, [grafo, carros, clientes]);
+  }, [clientes]);
+
+  useEffect(() => {
+    if (showGrafo) {
+      setTimeout(() => {
+        dataGrafo.focusedNodeId = "center";
+        const data = { ...dataGrafo };
+        setDataGrafo(data);
+
+        setTimeout(() => {
+          dataGrafo.focusedNodeId = null;
+          const data = { ...dataGrafo };
+          setDataGrafo(data);
+        }, 1000);
+      }, 200);
+    }
+  }, [showGrafo]);
 
   return (
     <div className="App">
@@ -419,6 +454,7 @@ function App() {
               onChangeInput={(e) => CreateMap(e, setterObjectGrafo)}
               onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)}
               onClickBackButton={() => setPosicaoBloco((antiga) => antiga - 1)}
+              arquivoLido={grafoLido}
               erroLeitura={erroLeituraGrafo}
             />
           )}
@@ -429,6 +465,7 @@ function App() {
               onChangeInput={(e) => CreateCarros(e, setterObjectCarros)}
               onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)}
               onClickBackButton={() => setPosicaoBloco((antiga) => antiga - 1)}
+              arquivoLido={carrosLidos}
               erroLeitura={erroLeituraCarros}
             />
           )}
@@ -437,8 +474,9 @@ function App() {
               title="Seleciona o arquivo de clientes"
               position="3"
               onChangeInput={(e) => CreateClientes(e, setterObjectClientes)}
-              onClickButton={() => setPosicaoBloco((antiga) => antiga + 1)}
+              onClickButton={() => setShowGrafo(true)}
               onClickBackButton={() => setPosicaoBloco((antiga) => antiga - 1)}
+              arquivoLido={clientesLidos}
               erroLeitura={erroLeituraClientes}
             />
           )}

@@ -39,9 +39,20 @@
   align-items: center;
 }
 
+.inputLabel {
+  position: absolute;
+  font-size: 13px;
+  top: 43.6%;
+  left: 47.3%;
+  text-shadow: 1px 1px 1px rgb(46, 46, 46);
+  cursor: pointer;
+  /* z-index: -1; */
+}
+
 input[type="file"]::file-selector-button {
   /* border: 2px solid ; */
   padding: 0.2em 0.4em;
+  text-shadow: 1px 1px 1px rgb(46, 46, 46);
   /* border-radius: .2em; */
   background-color: #0987d8;
   transition: 0.5s;
@@ -64,13 +75,17 @@ input[type="file"]::file-selector-button:hover {
 
 input[type="file"] {
   /* font-size: 14pt; */
-  text-shadow: 1px 1px 1px rgb(46, 46, 46);
+  /* opacity: 80%; */
+
+  color: transparent;
   background-color: gray;
   padding-right: 10px;
   border-radius: 0.3em;
 
   width: 55%;
   margin-top: 50px;
+  cursor: pointer;
+  /* z-index: 1; */
   /* color: black; */
 }
 

@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useRef } from "react";
 import "./BlocoLeitura.css";
 
 const BlocoLeitura = ({
@@ -7,15 +7,21 @@ const BlocoLeitura = ({
   onChangeInput,
   onClickButton,
   onClickBackButton,
+  arquivoLido,
   erroLeitura,
 }) => {
   const titulos = ["Arestas", "Carros", "Clientes"];
+  const inputRef = useRef(null);
 
   return (
     <div className="container">
       <p className="title">{title}</p>
       <div className="inputBox">
-        <input type="file" onChange={onChangeInput} />
+        <input ref={inputRef} type="file" onChange={onChangeInput} />
+
+        <span className="inputLabel" onClick={() => inputRef.current.click()}>
+          {arquivoLido ? arquivoLido.name : "Nenhum arquivo escolhido"}
+        </span>
       </div>
 
       {erroLeitura && (
@@ -25,12 +31,15 @@ const BlocoLeitura = ({
       )}
 
       <button
-        className={`button ${erroLeitura === true ? "disabledButton" : ""}`}
+        className={`button ${
+          erroLeitura || !arquivoLido ? "disabledButton" : ""
+        }`}
         onClick={onClickButton}
-        disabled={erroLeitura}
+        disabled={erroLeitura || !arquivoLido}
       >
         Avançar
       </button>
+
       <button
         className={`button backButton ${
           position === "1" ? "disabledButton" : ""

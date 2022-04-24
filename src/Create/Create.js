@@ -2,7 +2,7 @@
 import DFSCaminho from "../utils/DFS";
 import { verifyCarros, verifyClientes, verifyGrafo } from "../utils/verify";
 
-const ReadFile = async (event, tipo, cb) => {
+const ReadFile = async (event, tipo, setArquivoLido, cb) => {
   var fr = new FileReader();
   fr.onload = function () {
     const read = fr.result;
@@ -16,6 +16,7 @@ const ReadFile = async (event, tipo, cb) => {
     // }
   };
   console.log(event.target.files[0]);
+  setArquivoLido(event.target.files[0]);
   fr.readAsText(event.target.files[0]);
 };
 
@@ -23,7 +24,7 @@ const CreateMap = (event, setterObject) => {
   const arestas = {};
   const vertices = {};
 
-  ReadFile(event, 1, (result) => {
+  ReadFile(event, 1, setterObject.setArquivoLido, (result) => {
     // Retirando a primeira linha do arquivo texto
     if (!verifyGrafo(result)) {
       setterObject.setErroLeituraGrafo(true);
@@ -109,7 +110,7 @@ const CreateMap = (event, setterObject) => {
 };
 
 const CreateClientes = (event, setterObject) => {
-  ReadFile(event, 2, function (result) {
+  ReadFile(event, 2, setterObject.setArquivoLido, function (result) {
     const clientes = {};
 
     if (!verifyClientes(result)) {
@@ -151,7 +152,7 @@ const CreateClientes = (event, setterObject) => {
 };
 
 const CreateCarros = (event, setterObject) => {
-  ReadFile(event, 3, function (result) {
+  ReadFile(event, 3, setterObject.setArquivoLido, function (result) {
     const carroGraph = {};
 
     if (!verifyCarros(result)) {
@@ -186,7 +187,7 @@ const CreateCarros = (event, setterObject) => {
 
       carroGraph[node.id] = node;
     }
-    
+
     setterObject.setCarros(carroGraph);
   });
 };
@@ -257,4 +258,12 @@ function CarroNode(carro_id, loc_carro_x, loc_carro_y, aresta_id) {
   return carro;
 }
 
-export { ReadFile, CreateMap, CreateClientes, CreateCarros, CarroNode, ClienteNode, Node };
+export {
+  ReadFile,
+  CreateMap,
+  CreateClientes,
+  CreateCarros,
+  CarroNode,
+  ClienteNode,
+  Node,
+};
