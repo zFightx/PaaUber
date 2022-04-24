@@ -1,4 +1,4 @@
-﻿import React, {useState} from 'react';
+import React, {useState} from 'react';
 import "./BlocoCarro.css"
 
 import DFSCaminho from '../../utils/DFS';
@@ -7,7 +7,7 @@ import { verticeMaisProximo } from '../../utils/outros';
 import mergeSort from '../../algoritmos/mergesort';
 import UserImg from '../../assets/user.png';
 
-const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho}) => {
+const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho, setTemposCorridas}) => {
     const [subPage, setSubPage] = useState(0);
     const [comTempo, setComTempo] = useState(false);
     const [clienteSelect, setClienteSelect] = useState({});
@@ -156,6 +156,11 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho})
         setClienteSelect(novoClienteSelect);
         setSubPage(2);
     }
+
+      // funcao recebe o trajeto que tem o tempo e faz a media
+    const MediaTempoCorridas = (tempo) => {
+    setTemposCorridas((temposAtual) => [...temposAtual, tempo]);
+    };
 
     const AceitarCorrida = () => {
         clientes[clienteSelect.id].tem_carro = true;
