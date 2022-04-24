@@ -7,7 +7,7 @@ import { verticeMaisProximo } from '../../utils/outros';
 import mergeSort from '../../algoritmos/mergesort';
 import CarImg from '../../assets/car.png';
 
-const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho}) => {
+const BlocoCliente = ({addClass, carros, vertices, cliente, DesenharCaminho, ApagarCaminho}) => {
     const [subPage, setSubPage] = useState(0);
     const [listaCarros, setListaCarros] = useState([]);
     const [comTempo, setComTempo] = useState(false);
@@ -56,7 +56,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                 // console.log(carro);
                 return (
                     <div className='opcaoCliente' key={carro.id} 
-                        onMouseEnter={() => DesenharCaminho(carro.resultado.caminho)}
+                        onMouseEnter={() => DesenharCaminho(carro.resultado.caminho, [cliente.id, carro.id])}
                         onMouseLeave={() => ApagarCaminho(carro.resultado.caminho)}
                         onClick={() => SelectCarro(carro)}
                     >
@@ -70,7 +70,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
             return listaCarros.map(carro => {
                 return (
                     <div className='opcaoCliente' key={carro.id}
-                        onMouseEnter={() => DesenharCaminho(carro.resultado.caminho)}
+                        onMouseEnter={() => DesenharCaminho(carro.resultado.caminho, [cliente.id, carro.id])}
                         onMouseLeave={() => ApagarCaminho(carro.resultado.caminho)}
                         onClick={() => SelectCarro(carro)}
                     >
@@ -84,7 +84,7 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
     }
 
     return (
-        <div className="blocoCliente">
+        <div className={`blocoCliente ${addClass}`} onMouseLeave={ApagarCaminho}>
             <p className='titleCliente'>Cliente {cliente.id}</p>
             {
                 cliente.tem_carro &&
@@ -143,8 +143,8 @@ const BlocoCliente = ({carros, vertices, cliente, DesenharCaminho, ApagarCaminho
                             <img src={CarImg} />
                         </div>
                         <p>Solicitar corrida com {carroSelect.id}?</p>
-                        {comTempo && <p>Tempo: {carroSelect.resultado.tempo} horas</p>}
-                        {!comTempo && <p>Distância: {carroSelect.resultado.dist} km</p>}
+                        {comTempo && <p>Tempo: {carroSelect.resultado.tempo.toFixed(2)} horas</p>}
+                        {!comTempo && <p>Distância: {carroSelect.resultado.dist.toFixed(2)} km</p>}
                     </div>
 
                     <div className='opcaoButton'

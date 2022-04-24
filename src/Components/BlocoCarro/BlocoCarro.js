@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+﻿import React, {useState} from 'react';
 import "./BlocoCarro.css"
 
 import DFSCaminho from '../../utils/DFS';
@@ -7,7 +7,7 @@ import { verticeMaisProximo } from '../../utils/outros';
 import mergeSort from '../../algoritmos/mergesort';
 import UserImg from '../../assets/user.png';
 
-const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho, setTemposCorridas}) => {
+const BlocoCarro = ({addClass, carro, vertices, clientes, DesenharCaminho, ApagarCaminho, setTemposCorridas, corridas}) => {
     const [subPage, setSubPage] = useState(0);
     const [comTempo, setComTempo] = useState(false);
     const [clienteSelect, setClienteSelect] = useState({});
@@ -17,7 +17,7 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho, 
     const RenderClientes = () => {
         return listaClientes.map(cliente => 
             <div className='opcaoCliente' key={cliente.id} 
-                onMouseEnter={() => {DesenharCaminho(cliente.resultado.caminho)}}
+                onMouseEnter={() => {DesenharCaminho(cliente.resultado.caminho, [cliente.id, carro.id])}}
                 onMouseLeave={() => {ApagarCaminho(cliente.resultado.caminho)}}
                 onClick={() => SelectCliente(cliente)}
             >
@@ -67,7 +67,7 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho, 
             const caminho = AEstrela(vertices, start, end, withTime);
             const caminho2 = AEstrela(vertices, end, dest, withTime);
             
-            console.log(caminho);
+            // console.log(caminho);
             caminhos.push({
                 id: clienteId,
                 resultado: caminho,
@@ -115,7 +115,7 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho, 
     const RenderCaminhos = (secondColor) => {
         return listaCaminhos.map( (caminho, index) =>  
             <div className='opcaoCliente' key={`caminho_${index}`} 
-                onMouseEnter={() => {DesenharCaminho(caminho.resultado.vertices, secondColor)}}
+                onMouseEnter={() => {DesenharCaminho(caminho.resultado.vertices, secondColor ? [clienteSelect.id] : [clienteSelect.id, carro.id], secondColor)}}
                 onMouseLeave={() => {ApagarCaminho(caminho.resultado.vertices)}}
                 onClick={() => TrocarCaminho(caminho.resultado, secondColor)}
             >
@@ -165,10 +165,20 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho, 
     const AceitarCorrida = () => {
         clientes[clienteSelect.id].tem_carro = true;
         carro.ocupado = true;
+
+        corridas.push({
+            carro: carro,
+            cliente: clientes[clienteSelect.id],
+            toCliente: clienteSelect.resultado,
+            toDestino: clienteSelect.resultado2,
+            movendo: "toCliente",
+            moveu: 0,
+        });
+        console.log(corridas);
     }
 
     return (
-        <div className="blocoCliente blocoCarro">
+        <div className={`blocoCliente blocoCarro ${addClass}`} onMouseLeave={ApagarCaminho} >
             <p className='titleCliente'>Carro {carro.id}</p>
             {
                 carro.ocupado &&
@@ -248,7 +258,7 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho, 
                     </div> */}
 
                     <div className='opcaoCliente'
-                        onMouseEnter={() => {ApagarCaminho(clienteSelect.resultado2.caminho);DesenharCaminho(clienteSelect.resultado.caminho, false)}}
+                        onMouseEnter={() => {ApagarCaminho(clienteSelect.resultado2.caminho);DesenharCaminho(clienteSelect.resultado.caminho, [clienteSelect.id, carro.id], false)}}
                         onMouseLeave={() => {ApagarCaminho(clienteSelect.resultado.caminho)}}
                     >
                         <div className='opcaoText'>
@@ -263,7 +273,7 @@ const BlocoCarro = ({carro, vertices, clientes, DesenharCaminho, ApagarCaminho, 
                     </div>
 
                     <div className='opcaoCliente'
-                        onMouseEnter={() => {ApagarCaminho(clienteSelect.resultado.caminho);DesenharCaminho(clienteSelect.resultado2.caminho, true)}}
+                        onMouseEnter={() => {ApagarCaminho(clienteSelect.resultado.caminho);DesenharCaminho(clienteSelect.resultado2.caminho, [clienteSelect.id], true)}}
                         onMouseLeave={() => {ApagarCaminho(clienteSelect.resultado2.caminho)}}
                     >
 

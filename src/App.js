@@ -29,7 +29,10 @@ function App() {
   const [showBlocoCarro, setShowBlocoCarro] = useState(false);
   const [clienteId, setClientId] = useState("0");
   const [carroId, setCarroId] = useState("0");
+  const [corridas, setCorridas] = useState([]);
   const [temposCorridas, setTemposCorridas] = useState([0]);
+  const [umaVez, setUmaVez] = useState(false);
+  const [interval, setVarInterval] = useState(false);
 
   // Media de tempo de todas as viagens
   //   {temposCorridas.reduce((acc, curr) => acc + curr, 0) /
@@ -54,7 +57,7 @@ function App() {
 
   const ConvertData = () => {
     const keys = Object.keys(grafo);
-    if (keys.length == 0) return;
+    if (keys.length == 0 || umaVez) return;
 
     const data = {
       nodes: [],
@@ -85,7 +88,7 @@ function App() {
 
   const ConvertCarros = () => {
     const keys = Object.keys(carros);
-    if (keys.length == 0) return;
+    if (keys.length == 0 || umaVez) return;
 
     for (const numero in carros) {
       const carro = carros[numero];
@@ -105,7 +108,7 @@ function App() {
 
   const ConvertClientes = () => {
     const keys = Object.keys(clientes);
-    if (keys.length == 0) return;
+    if (keys.length == 0 || umaVez) return;
 
     for (const numero in clientes) {
       const cliente = clientes[numero];
@@ -150,11 +153,19 @@ function App() {
 
     setDataGrafo(dataGrafo);
     setShowGrafo(true);
+    setUmaVez(true);
 
+    console.log("rodou");
     setTimeout(() => {
       dataGrafo.focusedNodeId = "center";
       const data = { ...dataGrafo };
       setDataGrafo(data);
+
+      setTimeout(() => {
+        dataGrafo.focusedNodeId = null;
+        const data = { ...dataGrafo };
+        setDataGrafo(data);
+      }, 1000);
     }, 1000);
   };
 
@@ -174,52 +185,173 @@ function App() {
     // }
 
     // console.log(carros);
-    // console.log(clientes);
+    // console.log(clientes);    
+    
+    // if(interval){
+    //     clearInterval(interval);
+    //     interval = null;
+    // }
+
+    if(!interval){
+        console.log("ATIVOU INTERVAL");
+        setVarInterval(true);
+        setInterval(() => {
+            MoverCarro();
+        }, 1000);
+    }
   };
 
-  const DesenharCaminho = (caminho, secondColor) => {
+  const MoverCarro = () =>{
+    console.log(corridas);
+
+    corridas.forEach((corrida, corrida_id) => {
+        console.log(corrida.movendo);
+        if(corrida[corrida.movendo].caminho.length < 2){
+            if(corrida.movendo == "toCliente"){
+                let node_cliente = null;
+                dataGrafo.nodes.forEach((node, index) =>{ 
+                    if(node.id == corrida.cliente.id){
+                        node_cliente = node;
+                        dataGrafo.nodes.splice(index, 1);
+                    }
+                });
+
+                const data = {...dataGrafo};
+                setDataGrafo(data);
+
+                corrida.movendo = "toDestino";
+                corrida.bkpCliente = node_cliente;
+            }
+            else{
+                const index_cliente = carros[corrida.carro.id].tem_cliente.find(element => element == corrida.cliente.id);
+                carros[corrida.carro.id].tem_cliente.splice(index_cliente, 1);
+                carros[corrida.carro.id].ocupado = false;
+                clientes[corrida.cliente.id].tem_carro = false;
+                
+                console.log(corrida.toDestino.caminho[0]);
+                corrida.bkpCliente.x = corrida.toDestino.caminho[0].loc.x * 50;
+                corrida.bkpCliente.y = corrida.toDestino.caminho[0].loc.y * 50;
+                dataGrafo.nodes.push(corrida.bkpCliente);
+                const data = {...dataGrafo};
+                setDataGrafo(data);
+
+                corridas.splice(corrida_id, 1);
+            }
+            
+            return;
+        }
+
+        const pontoA = {...corrida[corrida.movendo].caminho[0].loc};
+        const pontoB = {...corrida[corrida.movendo].caminho[1].loc};
+
+        pontoA.x *= 50;
+        pontoA.y *= 50;
+        pontoB.x *= 50;
+        pontoB.y *= 50;
+
+        // m = (y2 - y1) / (x2 - x1)
+        const coeficiente = (pontoB.y - pontoA.y) / (pontoB.x - pontoA.x);
+
+        // y = mx + n
+        const n =  pontoA.y - (coeficiente*pontoA.x);
+
+        corrida.moveu += 15;
+
+        let sinal = (pontoA.x < pontoB.x) ? 1 : -1;
+        
+        const x = pontoA.x + (sinal * corrida.moveu);
+        const y = (coeficiente*x) + n;
+        // console.log(x, y);
+
+        if(sinal < 0){
+            if(x <= pontoB.x){
+                corrida[corrida.movendo].caminho.splice(0, 1);
+                corrida.moveu = 0;
+            }
+        }
+        else{
+            if(x >= pontoB.x){
+                corrida[corrida.movendo].caminho.splice(0, 1);
+                corrida.moveu = 0;
+            }
+        }
+
+        let bkpNode = null;
+        dataGrafo.nodes.forEach((node, index) => {
+            if(node.id == corrida.carro.id){
+                node.x = x;
+                node.y = y;
+                bkpNode = node;
+
+                dataGrafo.nodes.splice(index, 1);
+            }
+        });
+
+        setTimeout(() => {
+            dataGrafo.nodes.push(bkpNode);
+            const data = { ...dataGrafo };
+            setDataGrafo(data); 
+        },100);
+    });
+    
+    const data = { ...dataGrafo };
+    setDataGrafo(data);     
+  }
+
+  const DesenharCaminho = (caminho, include, secondColor) => {
     caminho.forEach((vertice, index) => {
       dataGrafo.nodes.forEach((node) => {
-        if (vertice.numero == node.id) {
+        if (vertice.numero == node.id || include.includes(node.id)) {
           node.color = secondColor ? "#562cca" : "#3a73c9";
+          node.opacity = "1.0";
         }
       });
 
       dataGrafo.links.forEach((link) => {
         if (index != caminho.length - 1) {
-          if (
-            link.source == vertice.numero &&
-            link.target == caminho[index + 1].numero
-          ) {
+          if (link.source == vertice.numero && link.target == caminho[index + 1].numero) {
             link.color = secondColor ? "red" : "#3a73c9";
+            link.opacity = "1.0";
           }
         }
       });
     });
+
+    // if(include){
+    //     console.log(include);
+    //     dataGrafo.nodes.filter(node => node.id == include)[0].opacity = "1.0";
+    //     console.log(dataGrafo.nodes.filter(node => node.id == include)[0]);
+    // }
+
     const data = { ...dataGrafo };
+    graphConfig.node.opacity = 0.1;
+    graphConfig.link.opacity = 0.1;
+
     setDataGrafo(data);
   };
 
   const ApagarCaminho = (caminho) => {
-    caminho.forEach((vertice, index) => {
+    // caminho.forEach((vertice, index) => {
       dataGrafo.nodes.forEach((node) => {
-        if (vertice.numero == node.id) {
-          node.color = "red";
-        }
+        node.color = "red";
+        node.opacity = null;
+        // if (vertice.numero == node.id) {
+        // }
       });
 
       dataGrafo.links.forEach((link) => {
-        if (index != caminho.length - 1) {
-          if (
-            link.source == vertice.numero &&
-            link.target == caminho[index + 1].numero
-          ) {
-            link.color = "#A9A29D";
-          }
-        }
+        link.color = "#A9A29D";
+        link.opacity = null;
+        // if (index != caminho.length - 1) {
+        //   if (link.source == vertice.numero && link.target == caminho[index + 1].numero) {
+        //   }
+        // }
       });
-    });
+    // });
+
     const data = { ...dataGrafo };
+    graphConfig.node.opacity = 1.0;
+    graphConfig.link.opacity = 1.0;
     setDataGrafo(data);
   };
 
@@ -235,6 +367,7 @@ function App() {
         <BlocoAdicionarCarro
           setCarros={setCarros}
           setDataGrafo={setDataGrafo}
+          setClientes={setClientes}
         />
       </div>
 
@@ -298,6 +431,7 @@ function App() {
           DesenharCaminho={DesenharCaminho}
           ApagarCaminho={ApagarCaminho}
           setTemposCorridas={setTemposCorridas}
+          corridas={corridas}
         />
       )}
     </div>
