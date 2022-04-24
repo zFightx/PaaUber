@@ -1,0 +1,28 @@
+﻿.containerEstatisticas{
+    position: absolute;
+    top: 0%; 
+    left: 50%;
+    transform: translate(-50%, 0%);
+    z-index: 1;
+    background-color: rgba(71, 71, 70, 0.455);
+    backdrop-filter: blur(10px);
+    padding: 10px;
+
+    border-radius: 0px 0px 10px 10px;
+    /* width: max-content; */
+    /* padding: 0 0 0 10px; */
+
+    /* text-align: center; */
+}
+
+.titleEstatisticas{
+    text-align: center;
+    /* background-color: rgb(58, 115, 201); */
+    
+    /* border: 1px solid white; */
+    /* padding: 0 100px; */
+}
+
+.data{
+    padding: 0 20px;
+}

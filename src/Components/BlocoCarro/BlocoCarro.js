@@ -7,7 +7,7 @@ import { verticeMaisProximo } from '../../utils/outros';
 import mergeSort from '../../algoritmos/mergesort';
 import UserImg from '../../assets/user.png';
 
-const BlocoCarro = ({addClass, carro, vertices, clientes, DesenharCaminho, ApagarCaminho, setTemposCorridas, corridas, DeletarCarro}) => {
+const BlocoCarro = ({addClass, carro, vertices, clientes, DesenharCaminho, ApagarCaminho, setDadosCorridas, corridas, DeletarCarro}) => {
     const [subPage, setSubPage] = useState(0);
     const [comTempo, setComTempo] = useState(false);
     const [clienteSelect, setClienteSelect] = useState({});
@@ -70,8 +70,8 @@ const BlocoCarro = ({addClass, carro, vertices, clientes, DesenharCaminho, Apaga
             // console.log(caminho);
             caminhos.push({
                 id: clienteId,
-                resultado: caminho,
-                resultado2: caminho2,
+                resultado: caminho,     // caminho do carro até o cliente
+                resultado2: caminho2,   // caminho do cliente até o destino
             });
         });
 
@@ -158,13 +158,18 @@ const BlocoCarro = ({addClass, carro, vertices, clientes, DesenharCaminho, Apaga
     }
 
       // funcao recebe o trajeto que tem o tempo e faz a media
-    const MediaTempoCorridas = (tempo) => {
-    setTemposCorridas((temposAtual) => [...temposAtual, tempo]);
+    const MediaTempoCorridas = (tempoCorrida, tempoEspera, dist) => {
+        
     };
 
     const AceitarCorrida = () => {
         clientes[clienteSelect.id].tem_carro = true;
         carro.ocupado = true;
+
+        let tempoEspera = clienteSelect.resultado.tempo;
+        let tempoCorrida = clienteSelect.resultado2.tempo;
+        let dist = clienteSelect.resultado2.dist; 
+        setDadosCorridas((dadosAtuais) => [...dadosAtuais, {tempoCorrida: tempoCorrida, tempoEspera: tempoEspera, dist: dist}]);
 
         corridas.push({
             carro: carro,

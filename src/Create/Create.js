@@ -192,15 +192,7 @@ const CreateCarros = (event, setterObject) => {
   });
 };
 
-function Node(
-  aresta_n,
-  v_origem,
-  loc_v_origem_x,
-  loc_v_origem_y,
-  v_destino,
-  distancia,
-  velocidade
-) {
+function Node(aresta_n, v_origem, loc_v_origem_x, loc_v_origem_y, v_destino, distancia, velocidade) {
   const vertice = {
     numero: v_origem,
     loc: {

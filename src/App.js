@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Graph } from "react-d3-graph";
 import { CreateMap, CreateCarros, CreateClientes } from "./Create/Create";
+import { Estatisticas } from "./Components/Estatisticas/Estatisticas";
 import { BlocoLeitura } from "./Components/BlocoLeitura/BlocoLeitura";
 import { BlocoCliente } from "./Components/BlocoCliente/BlocoCliente";
 import { BlocoCarro } from "./Components/BlocoCarro/BlocoCarro";
@@ -36,13 +37,11 @@ function App() {
   const [clienteId, setClientId] = useState("0");
   const [carroId, setCarroId] = useState("0");
   const [corridas, setCorridas] = useState([]);
-  const [temposCorridas, setTemposCorridas] = useState([0]);
+  const [dadosCorridas, setDadosCorridas] = useState([0]);
   const [umaVez, setUmaVez] = useState(false);
   const [interval, setVarInterval] = useState(false);
 
-  // Media de tempo de todas as viagens
-  //   {temposCorridas.reduce((acc, curr) => acc + curr, 0) /
-  //               temposCorridas.length}
+
 
   const setterObjectGrafo = {
     setGrafo: setGrafo,
@@ -437,11 +436,16 @@ function App() {
 
   return (
     <div className="App">
+      <Estatisticas dadosCorridas={dadosCorridas}/>
       <div>
         <BlocoAdicionarCarro
           setCarros={setCarros}
           setDataGrafo={setDataGrafo}
           setClientes={setClientes}
+          carros={carros}
+          clientes={clientes}
+          grafo={grafo}
+          setGrafo={setGrafo}
         />
       </div>
 
@@ -511,7 +515,7 @@ function App() {
           clientes={clientes}
           DesenharCaminho={DesenharCaminho}
           ApagarCaminho={ApagarCaminho}
-          setTemposCorridas={setTemposCorridas}
+          setDadosCorridas={setDadosCorridas}
           corridas={corridas}
           DeletarCarro={DeletarCarro}
         />

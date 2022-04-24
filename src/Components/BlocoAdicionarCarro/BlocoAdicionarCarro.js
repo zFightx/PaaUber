@@ -3,9 +3,9 @@ import React, {useState} from 'react';
 import car from '../../assets/car.png';
 import traveler from '../../assets/traveler.png';
 import "./BlocoAdicionarCarro.css";
-import { CarroNode, ClienteNode } from '../../Create/Create';
+import { CarroNode, ClienteNode, Node } from '../../Create/Create';
 
-const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
+const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clientes, grafo, setGrafo}) => {
     
     const [idCarro, setIdCarro] = useState ('');
     const [xCarro, setXCarro] = useState ('');
@@ -16,6 +16,10 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
     const [positionYCliente, setPositionYCliente] = useState('');
     const [destinoXCliente, setDestinoXCliente] = useState('');
     const [destinoYCliente, setDestinoYCliente] = useState('');
+    const [idVertice, setIdVertice] = useState('');
+    const [xVertice, setXVertice] = useState('');
+    const [yVertice, setYVertice] = useState('');
+    const [idAresta, setIdAresta] = useState('');
 
 
     const handleSubmitCarro = event => {
@@ -32,6 +36,14 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
         const cliente = ClienteNode(idCliente, positionXCliente, positionYCliente, destinoXCliente, destinoYCliente);
         setClientes (clientes => {clientes['cl_'+idCliente] = cliente; return clientes});
         setDataGrafo (data => {data.nodes.push({id: 'cl_'+idCliente, x: 50*positionXCliente, y: 50*positionYCliente, svg: traveler, "labelPosition": "top", "fontColor": "#6DADD6"}); return {...data}});
+    }
+
+    const handleSubmitVertice = event => {
+        event.preventDefault();
+        alert('Vértice adicionado!');
+        const vertice = Node(0, idVertice, xVertice, yVertice, [], 0, 0);
+        setGrafo (grafo => {grafo[idVertice] = vertice; return grafo})
+        setDataGrafo (data => {data.nodes.push({id: idVertice, x: 50*xVertice, y: 50*yVertice}); return {...data}});
     }
     
     const handleChangeIdCarro = event => {
@@ -66,9 +78,92 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
         setDestinoYCliente(event.target.value);
     };
 
+    const handleChangeIdVertice = event => {
+        setIdVertice(event.target.value);
+    };
+
+    const handleChangeXVertice = event => {
+        setXVertice(event.target.value);
+    };
+
+    const handleChangeYVertice = event => {
+        setYVertice(event.target.value);
+    };
+
+    const RenderCoordCarros = () =>{
+        const render = [];
+
+        for(const numero in carros){
+            render.push(carros[numero]);
+        }
+        
+        return render.map( carro => {
+            return (
+                <>
+                    <div className='opcaoCliente' onClick={() => setSubPage(4)}>
+                        <div className='opcaoText'>
+                            <p className='white'>{carro.id}</p>
+                        </div>  
+                        <p>{`x: ${carro.loc.x.toFixed(2)} , y: ${carro.loc.y.toFixed(2)}`}</p>
+                    </div>
+                </>
+            )
+        } );
+    }
+
+    const RenderCoordClientes = () =>{
+        const render = [];
+
+        for(const numero in clientes){
+            render.push(clientes[numero]);
+        }
+
+        return render.map( clientes => {
+            return (
+                <>
+                    <div className='opcaoCliente' onClick={() => setSubPage(4)}>
+                        <div className='opcaoText'>
+                        <div className='opcaoText'>
+                            <p className='white'>{clientes.id}</p>
+                            <div className='opcaoTextLine'>
+                                <p>{`Localização x: ${clientes.loc.x.toFixed(2)} , y: ${clientes.loc.y.toFixed(2)}`}</p>
+                            </div>
+                            <div className='opcaoTextLine'>
+                                <p>{`Destino x: ${clientes.dest.x.toFixed(2)} , y: ${clientes.dest.y.toFixed(2)}`}</p>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+                </>
+            )
+        } );
+    }
+
+    const RenderCoordVertices = () =>{
+        const render = [];
+
+        for(const numero in grafo){
+            render.push(grafo[numero]);
+        }
+
+        return render.map( grafo => {
+            return (
+                <>
+                    <div className='opcaoCliente' onClick={() => setSubPage(4)}>
+                        <div className='opcaoText'>
+                            <p className='white'>{grafo.numero}</p>
+                        </div>  
+                        <p>{`x: ${grafo.loc.x.toFixed(2)} , y: ${grafo.loc.y.toFixed(2)}`}</p>
+                    </div>
+                </>
+            )
+        } );
+    }
+
     return(
         <form onSubmit={handleSubmitCarro} className='blocoAdicionarCarro'>
-            <p className='titleAdicionarCarro'>Adicionar</p> 
+            <p className='titleAdicionarCarro'>Gerenciar</p> 
             { subPage === 0 &&
                 <>
                 <div className='opcaoCliente' onClick={() => setSubPage(1)}>
@@ -91,6 +186,24 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
                     <div className='opcaoCliente' onClick={() => setSubPage(3)}>
                         <div className='opcaoText'>
                             <p>Adicionar Vértice</p>
+                            <p> </p>
+                        </div>
+
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+
+                    <div className='opcaoCliente' onClick={() => setSubPage(8)}>
+                        <div className='opcaoText'>
+                            <p>Adicionar Aresta</p>
+                            <p> </p>
+                        </div>
+
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+
+                    <div className='opcaoCliente' onClick={() => setSubPage(4)}>
+                        <div className='opcaoText'>
+                            <p>Visualizar Posições</p>
                             <p> </p>
                         </div>
 
@@ -134,7 +247,6 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
                         <div className='opcaoText'>
                             <p>Voltar</p>
                         </div>  
-                        {/* <p>Pelo tempo</p> */}
                     </div>
 
                     <div className='blocoAdicionarInputs'>
@@ -168,10 +280,130 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes}) => {
                         <div className='opcaoText'>
                             <p>Voltar</p>
                         </div>  
-                        {/* <p>Pelo tempo</p> */}
+                    </div>  
+                    
+                    <div className='blocoAdicionarInputs'>
+
+                        <label className='labelAdicionarCarro'>Digite o id do vértice:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor inteiro' type="text" onChange={handleChangeIdVertice} />
+
+                        <label className='labelAdicionarCarro'>Digite a posição x do vértice:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeXVertice} />
+                        
+                        <label className='labelAdicionarCarro'>Digite a posição y do vértice:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeYVertice} />
+
+                        <input onClick={handleSubmitVertice} className='submitAdicionarCarro' type="submit" value="Enviar" />
+
+                    </div>              
+                </>
+            }
+            {
+                subPage === 8 &&
+                <>
+                    <div className='opcaoCliente' onClick={() => setSubPage(0)}>
+                        <i class="fas fa-angle-left"></i>
+                        <div className='opcaoText'>
+                            <p>Voltar</p>
+                        </div>  
                     </div>
                 
+                    <div className='blocoAdicionarInputs'>
+
+                        <label className='labelAdicionarCarro'>Digite o id do vértice de origem da aresta:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor inteiro' type="text" onChange={handleChangeIdVertice} />
+
+                        <label className='labelAdicionarCarro'>Digite a posição x do vértice:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeXVertice} />
+                        
+                        <label className='labelAdicionarCarro'>Digite a posição y do vértice:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeYVertice} />
+
+                        <input onClick={handleSubmitVertice} className='submitAdicionarCarro' type="submit" value="Enviar" />
+
+                    </div> 
                 
+                
+                
+                
+                </>
+            }
+
+            {
+                subPage === 4 &&
+                <>
+                    <div className='opcaoCliente' onClick={() => setSubPage(0)}>
+                        <i class="fas fa-angle-left"></i>
+                        <div className='opcaoText'>
+                            <p>Voltar</p>
+                        </div>  
+                    </div>
+
+                    <div className='opcaoCliente' onClick={() => setSubPage(5)}>
+                        <div className='opcaoText'>
+                            <p>Visualizar Carros</p>
+                            <p>coordenadas</p>
+                        </div>
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+                    
+                    <div className='opcaoCliente' onClick={() => setSubPage(6)}>
+                        <div className='opcaoText'>
+                            <p>Visualizar Clientes</p>
+                            <p>coordenadas e destino</p>
+                        </div>
+
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+
+                    <div className='opcaoCliente' onClick={() => setSubPage(7)}>
+                        <div className='opcaoText'>
+                            <p>Visualizar Vértices</p>
+                            <p>coordenadas</p>
+                        </div>
+
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+                
+                </>
+            }
+
+            {
+                subPage === 5 &&
+                <>
+                    <div className='opcaoCliente' onClick={() => setSubPage(4)}>
+                        <i class="fas fa-angle-left"></i>
+                        <div className='opcaoText'>
+                            <p>Voltar</p>
+                        </div>  
+                    </div>
+                    {RenderCoordCarros()}
+                </>
+            }
+
+            {
+                subPage === 6 &&
+                <>
+                    <div className='opcaoCliente' onClick={() => setSubPage(4)}>
+                        <i class="fas fa-angle-left"></i>
+                        <div className='opcaoText'>
+                            <p>Voltar</p>
+                        </div>  
+                    </div>
+                    {RenderCoordClientes()}
+                </>
+            }
+
+            {
+                subPage === 7 &&
+                <>
+                    <div className='opcaoCliente' onClick={() => setSubPage(4)}>
+                        <i class="fas fa-angle-left"></i>
+                        <div className='opcaoText'>
+                            <p>Voltar</p>
+                        </div>  
+                    </div>
+                    {RenderCoordVertices()}
                 </>
             }
             
