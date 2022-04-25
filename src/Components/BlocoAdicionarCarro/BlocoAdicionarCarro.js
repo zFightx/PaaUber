@@ -28,7 +28,11 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
         event.preventDefault();
         alert('Carro adicionado!');
         const carro = CarroNode(idCarro, xCarro, yCarro, 0);
-        setCarros( carros => {carros['ca_'+idCarro] = carro; return carros});
+        // carros['ca_'+idCarro] = carro;
+        let newCarros = {...carros, [`ca_${idCarro}`]: carro};
+        console.log(newCarros); 
+        setCarros(newCarros);
+        // carros['ca_'+idCarro] = carro; return {...carros}});
         setDataGrafo (data => {data.nodes.push({id: 'ca_'+idCarro, x: 50*xCarro, y: 50*yCarro, svg: car, "labelPosition": "top", "fontColor": "#E8DF2E"}); return {...data}});
     }
 

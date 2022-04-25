@@ -196,14 +196,14 @@ function Node(aresta_n, v_origem, loc_v_origem_x, loc_v_origem_y, v_destino, dis
   const vertice = {
     numero: v_origem,
     loc: {
-      x: loc_v_origem_x,
-      y: loc_v_origem_y,
+      x: parseFloat(loc_v_origem_x),
+      y: parseFloat(loc_v_origem_y),
     },
     vizinhos: {
       [v_destino]: {
         aresta_n: aresta_n,
-        distancia: distancia,
-        velocidade: velocidade,
+        distancia: parseFloat(distancia),
+        velocidade: parseFloat(velocidade),
         tem_carro: false,
         tem_cliente: false,
       },
@@ -222,12 +222,12 @@ function ClienteNode(
   const cliente = {
     id: `cl_${cliente_id}`,
     loc: {
-      x: loc_cliente_x,
-      y: loc_cliente_y,
+      x: parseFloat(loc_cliente_x),
+      y: parseFloat(loc_cliente_y),
     },
     dest: {
-      x: dest_cliente_x,
-      y: dest_cliente_y,
+      x: parseFloat(dest_cliente_x),
+      y: parseFloat(dest_cliente_y),
     },
     tem_carro: false,
   };
@@ -236,11 +236,12 @@ function ClienteNode(
 }
 
 function CarroNode(carro_id, loc_carro_x, loc_carro_y, aresta_id) {
+
   const carro = {
     id: `ca_${carro_id}`,
     loc: {
-      x: loc_carro_x,
-      y: loc_carro_y,
+      x: parseFloat(loc_carro_x),
+      y: parseFloat(loc_carro_y),
     },
     aresta: aresta_id,
     tem_cliente: [],
