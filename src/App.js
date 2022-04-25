@@ -37,11 +37,9 @@ function App() {
   const [clienteId, setClientId] = useState("0");
   const [carroId, setCarroId] = useState("0");
   const [corridas, setCorridas] = useState([]);
-  const [dadosCorridas, setDadosCorridas] = useState([0]);
+  const [dadosCorridas, setDadosCorridas] = useState([]);
   const [umaVez, setUmaVez] = useState(false);
   const [interval, setVarInterval] = useState(false);
-
-
 
   const setterObjectGrafo = {
     setGrafo: setGrafo,
@@ -117,7 +115,7 @@ function App() {
         fontColor: "#E8DF2E",
       });
     }
-    setDataGrafo({...dataGrafo});
+    setDataGrafo({ ...dataGrafo });
   };
 
   const ConvertClientes = () => {
@@ -178,6 +176,7 @@ function App() {
   };
 
   const onClickNode = (nodeId) => {
+    console.log("chamou");
     if (nodeId.includes("cl_")) {
       setClientId(nodeId);
       console.log(grafo);
@@ -201,10 +200,12 @@ function App() {
     //     interval = null;
     // }
 
+    console.log(dataGrafo);
     if (!interval) {
       // console.log("ATIVOU INTERVAL");
       setVarInterval(true);
-      setInterval(() => {
+      let interv = setInterval(() => {
+        console.log("timer");
         MoverCarro();
       }, 1000);
     }
@@ -212,7 +213,7 @@ function App() {
 
   const MoverCarro = () => {
     // console.log(corridas);
-
+    console.log("corridas");
     corridas.forEach((corrida, corrida_id) => {
       // console.log(corrida.movendo);
       if (corrida[corrida.movendo].caminho.length < 2) {
@@ -241,6 +242,13 @@ function App() {
           // console.log(corrida.toDestino.caminho[0]);
           corrida.bkpCliente.x = corrida.toDestino.caminho[0].loc.x * 50;
           corrida.bkpCliente.y = corrida.toDestino.caminho[0].loc.y * 50;
+          clientes[corrida.bkpCliente.id].loc.x =
+            corrida.toDestino.caminho[0].loc.x;
+          clientes[corrida.bkpCliente.id].loc.y =
+            corrida.toDestino.caminho[0].loc.y;
+          carros[corrida.carro.id].loc.x = corrida.toDestino.caminho[0].loc.x;
+          carros[corrida.carro.id].loc.y = corrida.toDestino.caminho[0].loc.y;
+
           dataGrafo.nodes.push(corrida.bkpCliente);
           const data = { ...dataGrafo };
           setDataGrafo(data);
@@ -304,6 +312,7 @@ function App() {
     });
 
     const data = { ...dataGrafo };
+    console.log("data", data);
     setDataGrafo(data);
   };
 
@@ -371,41 +380,41 @@ function App() {
     console.log("Tentando apagar", carroId);
 
     dataGrafo.nodes.forEach((node, index) => {
-        if(node.id == carroId){
-            dataGrafo.nodes.splice(index, 1);
-        }
+      if (node.id == carroId) {
+        dataGrafo.nodes.splice(index, 1);
+      }
     });
 
     delete carros[carroId];
-        
+
     console.log(carros);
     console.log(dataGrafo);
 
     const data = { ...dataGrafo };
-    setCarros({...carros});
+    setCarros({ ...carros });
     setDataGrafo(data);
     setShowBlocoCarro(false);
-  }
+  };
 
   const DeletarCliente = (clienteId) => {
     console.log("Tentando apagar", clienteId);
 
     dataGrafo.nodes.forEach((node, index) => {
-        if(node.id == clienteId){
-            dataGrafo.nodes.splice(index, 1);
-        }
+      if (node.id == clienteId) {
+        dataGrafo.nodes.splice(index, 1);
+      }
     });
 
     delete clientes[clienteId];
-        
+
     console.log(clientes);
     console.log(dataGrafo);
 
     const data = { ...dataGrafo };
-    setClientes({...clientes});
+    setClientes({ ...clientes });
     setDataGrafo(data);
     setShowBlocoCliente(false);
-  }
+  };
 
   useEffect(() => {
     ConvertData();
@@ -437,20 +446,20 @@ function App() {
 
   return (
     <div className="App">
-      <Estatisticas dadosCorridas={dadosCorridas}/>
-      <div>
-        <BlocoAdicionarCarro
-          setCarros={setCarros}
-          setDataGrafo={setDataGrafo}
-          setClientes={setClientes}
-          carros={carros}
-          clientes={clientes}
-          grafo={grafo}
-          setGrafo={setGrafo}
-          setArestas={setArestas}
-        />
-        
-      </div>
+      {showGrafo && <Estatisticas dadosCorridas={dadosCorridas} />}
+      {showGrafo && (
+        <div>
+          <BlocoAdicionarCarro
+            setCarros={setCarros}
+            setDataGrafo={setDataGrafo}
+            setClientes={setClientes}
+            carros={carros}
+            clientes={clientes}
+            grafo={grafo}
+            setGrafo={setGrafo}
+          />
+        </div>
+      )}
 
       {!showGrafo && (
         <header className="App-header">
