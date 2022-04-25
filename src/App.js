@@ -180,6 +180,7 @@ function App() {
   const onClickNode = (nodeId) => {
     if (nodeId.includes("cl_")) {
       setClientId(nodeId);
+      console.log(grafo);
       setShowBlocoCarro(false);
       setShowBlocoCliente((value) => !value);
     } else if (nodeId.includes("ca_")) {
@@ -446,7 +447,9 @@ function App() {
           clientes={clientes}
           grafo={grafo}
           setGrafo={setGrafo}
+          setArestas={setArestas}
         />
+        
       </div>
 
       {!showGrafo && (

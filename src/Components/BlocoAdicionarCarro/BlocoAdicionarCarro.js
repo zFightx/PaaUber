@@ -5,7 +5,7 @@ import traveler from '../../assets/traveler.png';
 import "./BlocoAdicionarCarro.css";
 import { CarroNode, ClienteNode, Node } from '../../Create/Create';
 
-const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clientes, grafo, setGrafo}) => {
+const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clientes, grafo, setGrafo, setArestas}) => {
     
     const [idCarro, setIdCarro] = useState ('');
     const [xCarro, setXCarro] = useState ('');
@@ -19,7 +19,9 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
     const [idVertice, setIdVertice] = useState('');
     const [xVertice, setXVertice] = useState('');
     const [yVertice, setYVertice] = useState('');
-    const [verticesDestino, setVerticeDestino] = useState('');
+    const [verticeDestino, setVerticeDestino] = useState('');
+    const [distancia, setDistancia] = useState('');
+    const [velocidade, setVelocidade] = useState('');
 
 
     const handleSubmitCarro = event => {
@@ -42,13 +44,22 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
         event.preventDefault();
         alert('Vértice adicionado!');
         const vertice = Node(0, idVertice, xVertice, yVertice, [], 0, 0);
-        setGrafo (grafo => {grafo[idVertice] = vertice; return grafo})
+        setGrafo (grafo => {grafo[idVertice] = vertice; return grafo});
         setDataGrafo (data => {data.nodes.push({id: idVertice, x: 50*xVertice, y: 50*yVertice}); return {...data}});
     }
 
     const handleSubmitAresta = event => {
         event.preventDefault();
-        alert('Aresta adicionado!');
+        alert('Aresta adicionada!');
+        const aresta = Node(0, idVertice, 0, 0, verticeDestino, distancia, velocidade);
+        grafo[idVertice].vizinhos[verticeDestino] = 
+        {aresta_n: 0,
+            distancia: distancia,
+            velocidade: velocidade,
+            tem_carro: false,
+            tem_cliente: false,};
+            setDataGrafo (data => {data.links.push({source: idVertice, target: verticeDestino, label:`${distancia} km, ${velocidade} km/h`, }); return {...data}});
+        
     }
     
     const handleChangeIdCarro = event => {
@@ -97,6 +108,14 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
 
     const handleChangeVerticeDestino = event => {
         setVerticeDestino(event.target.value);
+    };
+
+    const handleChangeDistancia = event => {
+        setDistancia(event.target.value);
+    };
+
+    const handleChangeVelocidade = event => {
+        setVelocidade(event.target.value);
     };
 
     const RenderCoordCarros = () =>{
@@ -324,6 +343,12 @@ const BlocoAdicionarCarro = ({setCarros, setDataGrafo, setClientes, carros, clie
 
                         <label className='labelAdicionarCarro'>Digite o id do vértice de destino:</label>
                         <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeVerticeDestino} />
+
+                        <label className='labelAdicionarCarro'>Digite a distância da aresta:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeDistancia} />
+
+                        <label className='labelAdicionarCarro'>Digite a velocidade da aresta:</label>
+                        <input className='labelAdicionarCarros' placeholder='valor do tipo float' type="text" onChange={handleChangeVelocidade} />
 
                         <input onClick={handleSubmitAresta} className='submitAdicionarCarro' type="submit" value="Enviar" />
 
